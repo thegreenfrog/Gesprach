@@ -8,7 +8,7 @@ if (Meteor.isClient) {
     net = initNetwork();
 
     addQTip(net);
-    addCxtMenu(net);
+    //addCxtMenu(net);
     addDrag(net);
     addEdgehandles(net);
 
@@ -62,6 +62,14 @@ function initNetwork() {
         },
         'target-arrow-shape': 'triangle',
       })
+        .selector(':selected')
+        .style({
+          'content': function(e) {
+            return e.data("name") ? e.data("name") : "";
+          },
+          'border-width': 1,
+          'border-color': 'black'
+        })
       .selector('.edgehandles-hover')
       .style({
         'background-color': 'red'
