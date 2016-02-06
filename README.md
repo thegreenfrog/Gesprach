@@ -1,10 +1,3 @@
-# Cyedit
+# Gesprach
 
-Collaborative network editor based on cytoscape.js and Meteor
-
-Read the [specs](https://github.com/cytoscape/cytoscape.js/issues/821#issuecomment-112497223)
-
-## Install
-
-    git clone https://github.com/maxkfranz/cyedit.git && cd cyedit
-    meteor
+Graph modeling of comment threads and conversations using Cytoscape.js and Meteor
