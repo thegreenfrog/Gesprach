@@ -9,7 +9,7 @@ if (Meteor.isClient) {
 
     addQTip(net);
     //addCxtMenu(net);
-    addDrag(net);
+    addBehavior(net);
     addEdgehandles(net);
 
     Tracker.autorun(function() {
@@ -166,33 +166,62 @@ function addEdgehandles(net) {
   });
 };
 
-// drag behaviour
-function addDrag(net) {
-
-  net.on('select', 'node', /*_.debounce(*/ function(e) {
-    var node = e.cyTarget;
-    Session.set('currentType', "node");
-    Session.set('currentId', node.id());
-    $("#infoBox").css('visibility', 'visible');
-  });
-
-  net.on('select', 'edge', /*_.debounce(*/ function(e) {
-    var edge = e.cyTarget;
-    console.log(edge);
-    Session.set('currentType', "edge");
-    Session.set('currentId', edge.id());
-    $("#infoBox").css('visibility', 'visible');
-  });
-
-  net.on('drag', 'node', /*_.debounce(*/ function(e) {
-    var node = e.cyTarget;
-    Meteor.call('updateNodePosition', node.id(), node.position());
-  })
+function finishCreateEdge() {
+    Session.set('addEdge', false);
+    Session.set('firstNodeSelected', false);
+    document.getElementById('edge').innerHTML= "Add Edge";
+    var newDiv = document.createElement('i');
+    newDiv.setAttribute('class', 'fa fa-plus fa-fw');
+    document.getElementById('edge').appendChild(newDiv);
 }
 
-// function addClick (net) {
-//     net.on('click', 'node', /*_.debounce(*/function( e ){
-//         var node = e.cyTarget;
-//         Meteor.call('selectNode', node.id());
-//     })
-// }
+// drag behaviour
+function addBehavior(net) {
+
+
+    net.on('select', 'node', /*_.debounce(*/ function(e) {
+        var node = e.cyTarget;
+        if(Session.get('addEdge')) {
+         if(!Session.get('firstNodeSelected')) {
+             console.log('adding source node');
+             Session.set('sourceNodeId', node.id());
+             Session.set('firstNodeSelected', true);
+             document.getElementById('edge').innerHTML = "Select Target";
+         } else {
+             console.log('adding second node');
+             //draw edge
+             var sourceNodeId = Session.get('sourceNodeId');
+             Meteor.call("addEdge", sourceNodeId, node.id(), 'edge');
+            finishCreateEdge();
+
+         }
+        }
+        Session.set('currentType', "node");
+        Session.set('currentId', node.id());
+        $("#infoBox").css('visibility', 'visible');
+    });
+
+    net.on('select', 'edge', /*_.debounce(*/ function(e) {
+        var edge = e.cyTarget;
+        console.log(edge);
+        Session.set('currentType', "edge");
+        Session.set('currentId', edge.id());
+        $("#infoBox").css('visibility', 'visible');
+    });
+
+    net.on('tap', function(e){
+        var target = e.cyTarget;
+        if(target == net) {
+            console.log('clicked in environment');
+            if(Session.get('addEdge')) {
+                finishCreateEdge();
+            }
+        }
+
+    });
+
+    net.on('drag', 'node', /*_.debounce(*/ function(e) {
+        var node = e.cyTarget;
+        Meteor.call('updateNodePosition', node.id(), node.position());
+    })
+}

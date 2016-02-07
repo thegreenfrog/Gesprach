@@ -57,6 +57,7 @@ Meteor.methods({
     },
 
     addEdge : function (sourceId, targetId, name) {
+        console.log('creating edge" with source:' + sourceId + " and target:" + targetId);
          Edges.insert({
             group: 'edges',
             data: {
