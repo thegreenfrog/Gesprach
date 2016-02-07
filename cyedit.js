@@ -60,7 +60,7 @@ function initNetwork() {
         'content': function(e) {
           return e.data("name") ? e.data("name") : "";
         },
-        'target-arrow-shape': 'triangle',
+        'target-arrow-shape': 'triangle'
       })
         .selector(':selected')
         .style({
@@ -97,7 +97,7 @@ function updateNetworkData(net) {
   if (nodes) net.add(nodes);
   if (edges) net.add(edges);
 
-  net.reset() // render layout
+  net.reset(); // render layout
 }
 
 function addQTip(net) {
@@ -143,12 +143,12 @@ function addCxtMenu(net) {
       select: function() {
         // console.log( this.position() );
         Meteor.call("lockNode", this.id(), this.position());
-      },
+      }
     }, {
       content: '<span class="fa fa-comments-o fa-2x"></span>',
       select: function() {
         Meteor.call("addComment", this.id());
-      },
+      }
 
     }]
   });
@@ -159,7 +159,7 @@ function addEdgehandles(net) {
 
   var onComplete = function(source, target, addedEntities) {
     Meteor.call("addEdge", source.data("id"), target.data("id"));
-  }
+  };
 
   net.edgehandles({
     complete: onComplete

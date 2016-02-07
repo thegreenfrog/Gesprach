@@ -17,10 +17,12 @@ function changeLayout (layoutName) {
 
 Template._header.events = {
     // add/remove nodes
-    "click #add" :  function(){ 
+    "click #add" :  function(e){
+        var text = $(e.target).find('[name=text]').val();
+        console.log('called meteor method with test: ' + text);
         var nodeId =  'node' + Math.round( Math.random() * 1000000 );
 
-        Meteor.call("addNode", nodeId, "New Node") 
+        Meteor.call("addNode", nodeId, "New Node")
     },
 
     // add random nodes 
@@ -44,9 +46,14 @@ Template._header.events = {
         console.log(edgeHandlesOn);
         if (edgeHandlesOn)net.edgehandles.start();
     },
+    'submit form': function(e) {
+        e.preventDefault();
+        var text = e.target.text.value;
+        console.log(text);
+        var nodeId = 'node' + Math.round( Math.random() * 1000000 );
 
-
-
+        Meteor.call("addNode", nodeId, text);
+    }
 }
 
 
