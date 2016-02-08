@@ -17,13 +17,13 @@ function changeLayout (layoutName) {
 
 Template._header.events = {
     // add/remove nodes
-    "click #add" :  function(e){
-        e.preventDefault();
-        var text = $(e.target).find('[name=text]').val();
-        console.log('called meteor method with test: ' + text);
-        var nodeId =  'node' + Math.round( Math.random() * 1000000 );
-        Meteor.call("addNode", nodeId, "New Node")
-    },
+    //"click #add" :  function(e){
+    //    e.preventDefault();
+    //    var text = $(e.target).find('[name=text]').val();
+    //    console.log('called meteor method with test: ' + text);
+    //    var nodeId =  'node' + Math.round( Math.random() * 1000000 );
+    //    Meteor.call("addNode", nodeId, "New Node")
+    //},
     //add edge
     "click #edge" : function(e){
         Session.set('addEdge', true);
@@ -54,14 +54,33 @@ Template._header.events = {
         console.log(edgeHandlesOn);
         if (edgeHandlesOn)net.edgehandles.start();
     },
+    //add Node
     'submit form': function(e, template) {
         e.preventDefault();
         var text = e.target.text.value;
         console.log(text);
         var nodeId = 'node' + Math.round( Math.random() * 1000000 );
 
-        Meteor.call("addNode", nodeId, text);
-        template.find("form").reset();
+        Meteor.call("addNode", nodeId, text, function(err, data) {
+            template.find("form").reset();
+            $('#add').dropdown("toggle");
+            console.log('x:' + data.x + ' y:' + data.y);
+            net.animate({
+                fit: {
+                    center: net.getElementById(nodeId),
+                    pan: {
+                        x: 100,
+                        y: 100
+                    },
+                    zoom: 1
+                }
+
+            }, {
+                duration: 1000
+            });
+            console.log('finished panning and zooming');
+        });
+
     }
 }
 

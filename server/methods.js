@@ -8,7 +8,7 @@ Meteor.methods({
         });
     },
 
-    updateNameByType :function (itemId, type, newName) {
+    updateNameByType : function (itemId, type, newName) {
 
         if( type == "node") {
 
@@ -34,8 +34,9 @@ Meteor.methods({
 
     },
 
-    addNode: function (nodeId, name) {
-
+    addNode : function (nodeId, name) {
+        var x = Math.random() * 800;
+        var y = Math.random() * 600;
         Nodes.insert({
           group: 'nodes',
           data: {
@@ -45,10 +46,15 @@ Meteor.methods({
             name : name
           },
           position: {
-            x: Math.random() *800,
-            y: Math.random() *600
+            x: x,
+            y: y,
           }
         });
+        return {
+            x: x,
+            y: y
+        }
+
     },
 
     deleteEdge : function(edgeId) {
