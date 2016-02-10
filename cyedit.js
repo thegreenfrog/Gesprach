@@ -42,7 +42,7 @@ function initNetwork() {
           return e.data("name")
         },
         'background-color': function(e) {
-          return e.data("starred") ? "yellow" : colors(e.data("group"))
+          return "navy"//e.data("starred") ? "yellow" : colors(e.data("group"))
         },
         'font-size': 12,
         'text-valign': 'center',
@@ -60,6 +60,9 @@ function initNetwork() {
         'content': function(e) {
           return e.data("name") ? e.data("name") : "";
         },
+        'line-color': '#a3a3a3',
+        'target-arrow-color': '#a3a3a3',
+        'width': 1,
         'target-arrow-shape': 'triangle'
       })
         .selector(':selected')
@@ -68,7 +71,7 @@ function initNetwork() {
             return e.data("name") ? e.data("name") : "";
           },
           'border-width': 1,
-          'border-color': 'black'
+          'border-color': '#000000'
         })
       .selector('.edgehandles-hover')
       .style({

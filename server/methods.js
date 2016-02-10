@@ -37,17 +37,24 @@ Meteor.methods({
     addNode : function (nodeId, name) {
         var x = Math.random() * 800;
         var y = Math.random() * 600;
+        var username = "anonymous";
+        if(Meteor.user() != null) {
+            console.log(Meteor.user().username);
+            username = Meteor.user().username;
+        }
         Nodes.insert({
           group: 'nodes',
           data: {
             id: nodeId,
+            user: username,
             starred : false,
-            group : _.random(0,5), // add group
-            name : name
+            name : name,
+            referencing: 0,
+            referenced: 0
           },
           position: {
             x: x,
-            y: y,
+            y: y
           }
         });
         return {
@@ -62,17 +69,36 @@ Meteor.methods({
         Edges.remove(edge);
     },
 
-    addEdge : function (sourceId, targetId, name) {
-        console.log('creating edge" with source:' + sourceId + " and target:" + targetId);
-         Edges.insert({
+    addEdgeHelper: function(sourceId, targetId, name) {
+        Edges.insert({
             group: 'edges',
             data: {
                 id: 'edge' + Math.round( Math.random() * 1000000 ),
-              "source" :sourceId,
-              "target" :targetId,
-              "name" : name
+                "source" :sourceId,
+                "target" :targetId,
+                "name" : name
             }
-          });
+        });
+    },
+
+    addEdge : function (sourceId, targetId, name) {
+        console.log('creating edge with source:' + sourceId + " and target:" + targetId);
+         Meteor.call('addEdgeHelper', sourceId, targetId, name, function(err, result) {
+             var source = Nodes.findOne({ "data.id" : sourceId });
+             Nodes.update({
+                 _id: source._id
+             }, {
+                 $inc: { "data.referencing": 1 }
+             });
+
+             var target = Nodes.findOne({ "data.id" : targetId });
+             Nodes.update({
+                 _id: target._id
+             }, {
+                 $inc: { "data.referenced": 1 }
+             });
+             console.log('updated source: ' + source.data.id + "and target: " + target.data.id);
+         });
     },
 
     deleteNode: function (nodeId) {

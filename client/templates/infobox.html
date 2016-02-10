@@ -4,12 +4,19 @@
         {{> xEditable type="text" value=currentSelection.data.name success=onSuccess placement="right" defaultValue="Name"}}
     </h3>
 
-
-    <ul>
-        <li>{{ currentSelection._id }}</li>
-        <li>{{ currentSelection.data.id }}</li>
-        <li>{{ currentSelection.group }}</li>
-        <li>{{ currentSelection.data.group }}</li>
-    </ul>
+    {{#if node}}
+        <ul>
+            <li>Node Id: {{ currentSelection.data.id }}</li>
+            <li>Posted by: {{ currentSelection.data.user }}</li>
+            <li>References: {{ currentSelection.data.referencing }}</li>
+            <li>Referenced: {{ currentSelection.data.referenced }}</li>
+        </ul>
+    {{else}}
+        <ul>
+            <li>Edge Id: {{ currentSelection.data.id }}</li>
+            <li>Source Node: {{ currentSelection.data.source }}</li>
+            <li>Target Node: {{ currentSelection.data.target }}</li>
+        </ul>
+    {{/if}}
 
 </template>

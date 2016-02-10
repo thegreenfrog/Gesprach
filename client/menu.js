@@ -15,6 +15,12 @@ function changeLayout (layoutName) {
     layout.run();
 }
 
+Template._header.helpers({
+   currentUsername : function() {
+       return Meteor.user().username;
+   }
+});
+
 Template._header.events = {
     // add/remove nodes
     //"click #add" :  function(e){
@@ -57,33 +63,50 @@ Template._header.events = {
     //add Node
     'submit form': function(e, template) {
         e.preventDefault();
-        var text = e.target.text.value;
-        console.log(text);
-        var nodeId = 'node' + Math.round( Math.random() * 1000000 );
+        if($(e.target).prop("id") == 'add') {
+            var text = e.target.text.value;
+            console.log(text);
+            var nodeId = 'node' + Math.round( Math.random() * 1000000 );
 
-        Meteor.call("addNode", nodeId, text, function(err, data) {
-            template.find("form").reset();
-            $('#add').dropdown("toggle");
-            console.log('x:' + data.x + ' y:' + data.y);
-            net.animate({
-                fit: {
-                    center: net.getElementById(nodeId),
-                    pan: {
-                        x: 100,
-                        y: 100
-                    },
-                    zoom: 1
-                }
+            Meteor.call("addNode", nodeId, text, function(err, data) {
+                template.find("form").reset();
+                $('#add').dropdown("toggle");
+                console.log('x:' + data.x + ' y:' + data.y);
+                net.animate({
+                    fit: {
+                        center: net.getElementById(nodeId),
+                        pan: {
+                            x: 100,
+                            y: 100
+                        },
+                        zoom: 1
+                    }
 
-            }, {
-                duration: 1000
+                }, {
+                    duration: 1000
+                });
+                console.log('finished panning and zooming');
             });
-            console.log('finished panning and zooming');
-        });
+        }
+
 
     }
 }
 
+Template.accounts.events = {
+    'submit form': function(e, template) {
+        e.preventDefault();
+        console.log('signing in');
+        var username = e.target.username.value;
+        var password = e.target.password.value;
+        console.log('username: ' + username + " password: " + password);
+        Accounts.createUser({
+            email: username,
+            password: password
+        });
+        //Route back home again and check for current user
+    }
+}
 
 
 

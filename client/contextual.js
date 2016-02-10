@@ -25,5 +25,10 @@ Template.infobox.helpers({
         }
 
         return item;
+    },
+
+    node: function() {
+        var type = Session.get('currentType');
+        return type == "node";
     }
 })

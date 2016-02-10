@@ -4,10 +4,19 @@
   width : 100vw;
   height: 50vw;
   position: absolute;
+  background-color: #D1EEEE;
 }
 
 #infoBox{
   visibility: hidden;
+}
+
+.navbar{
+  margin-bottom: 0px;
+}
+
+#signin{
+
 }
 
 
