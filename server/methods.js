@@ -43,19 +43,21 @@ Meteor.methods({
             username = Meteor.user().username;
         }
         Nodes.insert({
-          group: 'nodes',
-          data: {
-            id: nodeId,
-            user: username,
-            starred : false,
-            name : name,
-            referencing: 0,
-            referenced: 0
-          },
-          position: {
-            x: x,
-            y: y
-          }
+            group: 'nodes',
+            data: {
+                id: nodeId,
+                user: username,
+                starred : false,
+                name : name,
+                referencing: 0,
+                referenced: 0
+            },
+            selected: false,
+            selectable: true,
+            position: {
+                x: x,
+                y: y
+            }
         });
         return {
             x: x,

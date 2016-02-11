@@ -1,0 +1,12 @@
+<template name="listStack">
+    <div id="listStack">
+        <ul class="scrollable-menu" id="hiddenBullet" role="menu">
+            {{#each comment}}
+                <a href="#">
+                    <li class="{{highlight}}"><div>{{this.data.name}}</div></li><hr />
+                </a>
+            {{/each}}
+        </ul>
+
+    </div>
+</template>

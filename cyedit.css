@@ -1,10 +1,47 @@
 /* CSS declarations go here  */
 
 #cy {
-  width : 100vw;
-  height: 50vw;
+  width : 75vw;
+  height: 100vh;
   position: absolute;
+  float: right;
   background-color: #D1EEEE;
+}
+
+#listStack {
+    width: 25vw;
+    height: 100vh;
+    float: left;
+}
+
+.scrollable-menu {
+    padding-left: 0;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.scrollable-menu a {
+
+    text-decoration: none;
+    background-color: #FFEF93;
+}
+
+.scrollable-menu hr {
+    margin: 0;
+}
+
+.scrollable-menu li {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    list-style-type: none;
+}
+
+.scrollable-menu li:hover {
+    background-color: #AAAAAA;
+}
+
+.scrollable-menu .highlight {
+    background-color: #BEBEBE;
 }
 
 #infoBox{
@@ -12,12 +49,13 @@
 }
 
 .navbar{
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 #signin{
 
 }
+
 
 
 /*

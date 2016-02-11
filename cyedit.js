@@ -41,9 +41,7 @@ function initNetwork() {
         'content': function(e) {
           return e.data("name")
         },
-        'background-color': function(e) {
-          return "navy"//e.data("starred") ? "yellow" : colors(e.data("group"))
-        },
+        'background-color': '#73B1B7',
         'font-size': 12,
         'text-valign': 'center',
         'color': 'white',
@@ -70,6 +68,7 @@ function initNetwork() {
           'content': function(e) {
             return e.data("name") ? e.data("name") : "";
           },
+            'background-color': 'navy',
           'border-width': 1,
           'border-color': '#000000'
         })
