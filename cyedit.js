@@ -200,6 +200,12 @@ function addBehavior(net) {
         }
         Session.set('currentType', "node");
         Session.set('currentId', node.id());
+        var oldId = Session.get('currentSelected');
+        if (oldId != null) {
+            var oldNode = net.getElementById(oldId);
+            oldNode.unselect();
+        }
+        Session.set('currentSelected', node.id());
         $("#infoBox").css('visibility', 'visible');
     });
 
@@ -218,6 +224,8 @@ function addBehavior(net) {
             if(Session.get('addEdge')) {
                 finishCreateEdge();
             }
+            Session.set('currentSelected', null);
+            $("#infoBox").css('visibility', 'invisible');
         }
 
     });
