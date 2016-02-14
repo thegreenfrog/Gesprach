@@ -123,7 +123,7 @@ function addCxtMenu(net) {
         this.neighborhood('edge').forEach(function(el, i) {
           // console.log(el.id());
           Meteor.call("deleteEdge", el.id());
-        })
+        });
 
         // remove this node
         Meteor.call("deleteNode", this.id());
@@ -206,7 +206,7 @@ function addBehavior(net) {
             oldNode.unselect();
         }
         Session.set('currentSelected', node.id());
-        $("#infoBox").css('visibility', 'visible');
+        //$("#infoBox").css('visibility', 'visible');
     });
 
     net.on('select', 'edge', /*_.debounce(*/ function(e) {
@@ -214,7 +214,7 @@ function addBehavior(net) {
         console.log(edge);
         Session.set('currentType', "edge");
         Session.set('currentId', edge.id());
-        $("#infoBox").css('visibility', 'visible');
+        //$("#infoBox").css('visibility', 'visible');
     });
 
     net.on('tap', function(e){

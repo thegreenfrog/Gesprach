@@ -82,15 +82,29 @@
 
 <template name="accounts">
     {{#if currentUser}}
-        <li><a href="#">Sign Out</a></li>
+        <li><a href="#" id="sign-out">Sign Out</a></li>
     {{else}}
-        <form class="navbar-form navbar-left" role="user">
-            <div class="form-group">
-                <input type="text" class="form-control" id="username" placeholder="Username">
-                <input type="text" class="form-control" id="password" placeholder="Password">
-            </div>
-            <input type="submit" class="btn btn-default" id="signin" value = "Sign In">
-        </form>
+        {{#if signupPage}}
+            <form class="navbar-form navbar-left" role="user">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="username" placeholder="Username">
+                    <input type="text" class="form-control" id="email" placeholder="Email">
+                    <input type="text" class="form-control" id="password" placeholder="Password">
+                </div>
+                <input type="submit" class="btn btn-default" id="signup" value = "Sign Up">
+            </form>
+            <a href="#" class="" id="signin-page">Sign In</a>
+        {{else}}
+            <form class="navbar-form navbar-left" role="user">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="usernameEmail" placeholder="Username/Email">
+                    <input type="text" class="form-control" id="password" placeholder="Password">
+                </div>
+                <input type="submit" class="btn btn-default" id="signin" value = "Sign In">
+            </form>
+            <a href="#" class="" id="signup-page">Create Account</a>
+        {{/if}}
+
     {{/if}}
 
     <!--
