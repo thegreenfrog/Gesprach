@@ -41,16 +41,24 @@ Meteor.methods({
         if(Meteor.user() != null) {
             console.log(Meteor.user().username);
             username = Meteor.user().username;
+            Meteor.users.update({_id: Meteor.userId()}, {$inc: {"posts": 1}});
         }
+        var date = new Date();
+        var dateNum = date.getTime();
         Nodes.insert({
             group: 'nodes',
+            connective: {
+                total: 0,
+                referencing: 0,
+                referenced: 0
+            },
             data: {
                 id: nodeId,
                 user: username,
                 starred : false,
                 name : name,
-                referencing: 0,
-                referenced: 0
+                date_created: date,
+                date_order: dateNum
             },
             selected: false,
             selectable: true,
@@ -90,16 +98,15 @@ Meteor.methods({
              Nodes.update({
                  _id: source._id
              }, {
-                 $inc: { "data.referencing": 1 }
+                 $inc: { "connective.referencing": 1 , "connective.total": 1}
              });
 
              var target = Nodes.findOne({ "data.id" : targetId });
              Nodes.update({
                  _id: target._id
              }, {
-                 $inc: { "data.referenced": 1 }
+                 $inc: { "data.referenced": 1, "connective.total": 1}
              });
-             console.log('updated source: ' + source.data.id + "and target: " + target.data.id);
          });
     },
 

@@ -41,8 +41,15 @@ function initNetwork() {
         'content': function(e) {
           return e.data("name")
         },
-        'background-color': '#73B1B7',
-        'font-size': 12,
+        'background-color': function(e) {
+            var user = e.data("user");
+            if(user == "anonymous") {
+                return '#73B79B';
+            } else {
+                return '#B7738F';
+            }
+        },
+        'font-size' : 12,
         'text-valign': 'center',
         'color': 'white',
         'text-outline-width': 2,
@@ -68,7 +75,14 @@ function initNetwork() {
           'content': function(e) {
             return e.data("name") ? e.data("name") : "";
           },
-            'background-color': 'navy',
+            'background-color': function(e) {
+                var user = e.data("user");
+                if(user == "anonymous") {
+                    return '#356752';
+                } else {
+                    return '#67354A';
+                }
+            },
           'border-width': 1,
           'border-color': '#000000'
         })

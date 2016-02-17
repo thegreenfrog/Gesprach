@@ -1,21 +1,58 @@
 Template.listStack.helpers({
     comment: function() {
-        return Nodes.find();
+        var order = Session.get('commentOrder');
+        console.log(order);
+        switch(order) {
+            case 'edgeConnect':
+                return Nodes.find({}, {sort: {'connective.total': -1}});
+            case 'recentPost':
+                return Nodes.find({}, {sort: {'data.date_order': -1}});
+            default:
+                return Nodes.find();
+        }
+    },
+    toggleSort: function(id) {
+        console.log('id: ' + id);
+        return Session.get('commentOrder') == id ? "highlight" : "";
     },
     highlight: function() {
         return Session.get('currentSelected') == this.data.id ? "highlight" : "";
     },
     nodeId: function() {
         return this.data.id;
+    },
+    date: function() {
+
+        var d = this.data.date_created;
+        console.log(this.data.date_order);
+        var day = d.getDate();
+        var month = d.getMonth() + 1; //Months are zero based
+        var year = d.getFullYear();
+        var hour_military = d.getHours();
+        var hour = ((hour_military + 11) % 12) + 1;
+        var amPm = hour_military > 11 ? 'PM' : 'AM';
+        var minute = d.getMinutes();
+        var complete = day + "-" + month + "-" + year + " " + hour + ":" + minute + amPm;
+        //console.log(complete);
+        return complete
     }
 });
 
-function changeCurrentSelected(nodeId) {
-
-};
-
 Template.listStack.events = {
-    'click li': function(event, template) {
+    'click #edgeConnect' : function(event) {
+        event.preventDefault();
+        console.log('sorting by edge connections');
+        Session.set('commentOrder', 'edgeConnect');
+    },
+
+    'click #recentPost' : function(event) {
+        event.preventDefault();
+        console.log('sorting by user post frequency');
+
+        Session.set('commentOrder', 'recentPost');
+    },
+
+    'click #hiddenBullet li': function(event, template) {
         var id = this.data.id;
         var node = net.getElementById(id);
         node.select();
@@ -28,8 +65,14 @@ Template.listStack.events = {
     }
 };
 
+Template.listStack.onCreated(function() {
+    console.log('order set');
+    Session.set('commentOrder', 'recentPost');
+});
+
 Template.listStack.onRendered(function() {
     Session.set('currentSelected', null);
+
     this.autorun(function(){
         console.log('re-rendering');
         Template.currentData();

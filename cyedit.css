@@ -44,17 +44,46 @@
     background-color: #BEBEBE;
 }
 
-#infoBox{
+#infoBox {
   visibility: hidden;
 }
 
-.navbar{
+.navbar {
   margin-bottom: 0;
 }
 
-#signin{
+#toggle-box {
+    background-color: #e7e7e7;
+    width: 25vw;
+}
+
+#toggle-box ul {
+    padding: 0;
+    width: 25vw;
+    margin: 0;
+    display: table;
 
 }
+
+#toggle-box li{
+    padding: 5px;
+    text-align: center;
+    display: table-cell;
+    list-style-type: none;
+}
+
+#toggle-box .highlight {
+    background-color: #A5A5A5;
+}
+
+#toggle-box li+li { border-left: 1px solid #000000 }
+
+#toggle-box li a {
+    text-decoration: none;
+    display: block;
+    margin: 0 5px;
+}
+
 
 
 

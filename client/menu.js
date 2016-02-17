@@ -61,7 +61,7 @@ Template._header.events = {
 
     },
 
-    //add Node or Log-in/Sign up
+    //add Node
     'submit form': function(e, template) {
         e.preventDefault();
         if($(e.target).prop("id") == 'add') {
@@ -133,7 +133,8 @@ Template.accounts.events = {
             Accounts.createUser({
                 email: email,
                 username: username,
-                password: password
+                password: password,
+                posts: 0
             }, function(error) {
                 if(error) {
                     console.log(error.reason);

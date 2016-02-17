@@ -1,9 +1,20 @@
 <template name="listStack">
+    <div id="toggle-box">
+        <ul>
+            <li class="{{toggleSort "edgeConnect"}}"><a href="#" id="edgeConnect">Connectivity</a></li>
+            <li class="{{toggleSort "recentPost"}}"><a href="#" id="recentPost">Date Posted</a></li>
+        </ul>
+    </div>
     <div id="listStack">
         <ul class="scrollable-menu" id="hiddenBullet" role="menu">
             {{#each comment}}
                 <a href="#">
-                    <li class="{{highlight}}" id="{{nodeId}}"><div>{{this.data.name}}</div></li><hr />
+                    <li class="{{highlight}}" id="{{nodeId}}">
+                        <div>{{this.data.name}}</div>
+                        <div>Posted By: {{this.data.user}}</div>
+                        <div>{{date}}</div>
+                        <div>{{this.connective.total}}</div>
+                    </li><hr />
                 </a>
             {{/each}}
         </ul>
