@@ -42,7 +42,7 @@ function initNetwork() {
           return e.data("name")
         },
         'background-color': function(e) {
-            var user = e.data("user");
+            var user = e.data("user.user");
             if(user == "anonymous") {
                 return '#73B79B';
             } else {
@@ -62,9 +62,6 @@ function initNetwork() {
       })
       .selector('edge')
       .style({
-        'content': function(e) {
-          return e.data("name") ? e.data("name") : "";
-        },
         'line-color': '#a3a3a3',
         'target-arrow-color': '#a3a3a3',
         'width': 1,
@@ -76,7 +73,7 @@ function initNetwork() {
             return e.data("name") ? e.data("name") : "";
           },
             'background-color': function(e) {
-                var user = e.data("user");
+                var user = e.data("user.user");
                 if(user == "anonymous") {
                     return '#356752';
                 } else {

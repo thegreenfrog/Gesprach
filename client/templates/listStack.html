@@ -3,6 +3,7 @@
         <ul>
             <li class="{{toggleSort "edgeConnect"}}"><a href="#" id="edgeConnect">Connectivity</a></li>
             <li class="{{toggleSort "recentPost"}}"><a href="#" id="recentPost">Date Posted</a></li>
+            <li class="{{toggleSort "userActivity"}}"><a href="#" id="userActivity">User Activity</a></li>
         </ul>
     </div>
     <div id="listStack">
@@ -11,9 +12,9 @@
                 <a href="#">
                     <li class="{{highlight}}" id="{{nodeId}}">
                         <div>{{this.data.name}}</div>
-                        <div>Posted By: {{this.data.user}}</div>
+                        <div>Posted By: {{this.data.user.user}}</div>
                         <div>{{date}}</div>
-                        <div>{{this.connective.total}}</div>
+                        <div>{{this.data.user.postTotal}}</div>
                     </li><hr />
                 </a>
             {{/each}}

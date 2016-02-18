@@ -7,6 +7,8 @@ Template.listStack.helpers({
                 return Nodes.find({}, {sort: {'connective.total': -1}});
             case 'recentPost':
                 return Nodes.find({}, {sort: {'data.date_order': -1}});
+            case 'userActivity':
+                return Nodes.find({}, {sort: {'data.user.visibility': -1, 'data.user.postTotal': 1}});
             default:
                 return Nodes.find();
         }
@@ -24,7 +26,6 @@ Template.listStack.helpers({
     date: function() {
 
         var d = this.data.date_created;
-        console.log(this.data.date_order);
         var day = d.getDate();
         var month = d.getMonth() + 1; //Months are zero based
         var year = d.getFullYear();
@@ -47,9 +48,15 @@ Template.listStack.events = {
 
     'click #recentPost' : function(event) {
         event.preventDefault();
-        console.log('sorting by user post frequency');
+        console.log('sorting by date posted');
 
         Session.set('commentOrder', 'recentPost');
+    },
+
+    'click #userActivity' : function(event) {
+        event.preventDefault();
+        console.log('sorting by user activity');
+        Session.set('commentOrder', 'userActivity');
     },
 
     'click #hiddenBullet li': function(event, template) {

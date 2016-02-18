@@ -1,4 +1,7 @@
-Meteor.subscribe('nodes');
-Meteor.subscribe('edges');
+if(Meteor.isClient) {
+    Meteor.subscribe('nodes');
+    Meteor.subscribe('edges');
+    Meteor.subscribe('comments');
 
-Meteor.subscribe('comments');
+}
+

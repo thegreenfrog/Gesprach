@@ -38,10 +38,14 @@ Meteor.methods({
         var x = Math.random() * 800;
         var y = Math.random() * 600;
         var username = "anonymous";
+        var postTotal = 0;
+        var visibility = 0;
         if(Meteor.user() != null) {
             console.log(Meteor.user().username);
             username = Meteor.user().username;
             Meteor.users.update({_id: Meteor.userId()}, {$inc: {"posts": 1}});
+            postTotal = Meteor.user().posts;
+            visibility = 1;
         }
         var date = new Date();
         var dateNum = date.getTime();
@@ -54,7 +58,11 @@ Meteor.methods({
             },
             data: {
                 id: nodeId,
-                user: username,
+                user: {
+                    user: username,
+                    visibility: visibility,//determine if anonymous or has username
+                    postTotal: postTotal
+                },
                 starred : false,
                 name : name,
                 date_created: date,
@@ -67,6 +75,10 @@ Meteor.methods({
                 y: y
             }
         });
+        if(username != "anonymous") {
+            console.log('updating postTotals');
+            Nodes.update({"data.user.user": username}, {$set: {"data.user.postTotal": postTotal}}, {multi: true});
+        }
         return {
             x: x,
             y: y
