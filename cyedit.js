@@ -194,21 +194,31 @@ function addBehavior(net) {
 
     net.on('select', 'node', /*_.debounce(*/ function(e) {
         var node = e.cyTarget;
-        if(Session.get('addEdge')) {
-         if(!Session.get('firstNodeSelected')) {
-             console.log('adding source node');
-             Session.set('sourceNodeId', node.id());
-             Session.set('firstNodeSelected', true);
-             document.getElementById('edge').innerHTML = "Select Target";
-         } else {
-             console.log('adding second node');
-             //draw edge
-             var sourceNodeId = Session.get('sourceNodeId');
-             Meteor.call("addEdge", sourceNodeId, node.id(), 'edge');
-            finishCreateEdge();
-
-         }
-        }
+        //if(Session.get('addEdge')) {
+        // if(!Session.get('firstNodeSelected')) {
+        //     console.log('adding source node');
+        //     Session.set('sourceNodeId', node.id());
+        //     Session.set('firstNodeSelected', true);
+        //     document.getElementById('edge').innerHTML = "Select Target";
+        // } else {
+        //     console.log('adding second node');
+        //     //draw edge
+        //     var sourceNodeId = Session.get('sourceNodeId');
+        //     Meteor.call("addEdge", sourceNodeId, node.id(), 'edge');
+        //    finishCreateEdge();
+        //
+        // }
+        //}
+        net.animate({
+            zoom: 2,
+            center: {
+                eles: node
+            }
+        }, {
+            duration: 800
+        });
+        //net.center(node);
+        //net.zoom(2.0);
         Session.set('currentType', "node");
         Session.set('currentId', node.id());
         var oldId = Session.get('currentSelected');
@@ -217,7 +227,7 @@ function addBehavior(net) {
             oldNode.unselect();
         }
         Session.set('currentSelected', node.id());
-        //$("#infoBox").css('visibility', 'visible');
+        $("#infoBox").css('visibility', 'visible');
     });
 
     net.on('select', 'edge', /*_.debounce(*/ function(e) {
@@ -225,7 +235,7 @@ function addBehavior(net) {
         console.log(edge);
         Session.set('currentType', "edge");
         Session.set('currentId', edge.id());
-        //$("#infoBox").css('visibility', 'visible');
+        $("#infoBox").css('visibility', 'visible');
     });
 
     net.on('tap', function(e){
@@ -236,7 +246,7 @@ function addBehavior(net) {
                 finishCreateEdge();
             }
             Session.set('currentSelected', null);
-            $("#infoBox").css('visibility', 'invisible');
+            $("#infoBox").css('visibility', 'hidden');
         }
 
     });

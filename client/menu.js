@@ -70,22 +70,22 @@ Template._header.events = {
             var nodeId = 'node' + Math.round( Math.random() * 1000000 );
 
             Meteor.call("addNode", nodeId, text, function(err, data) {
+                var node = net.getElementById(nodeId);
+                node.select();
                 template.find("form").reset();
                 $('#add').dropdown("toggle");
                 console.log('x:' + data.x + ' y:' + data.y);
+
                 net.animate({
-                    fit: {
-                        center: net.getElementById(nodeId),
-                        pan: {
-                            x: 100,
-                            y: 100
-                        },
-                        zoom: 1
+                    zoom: 2,
+                    center: {
+                        eles: node
                     }
 
                 }, {
-                    duration: 1000
+                    duration: 800
                 });
+
                 console.log('finished panning and zooming');
             });
         }
@@ -96,10 +96,11 @@ Template._header.events = {
 
     // layouts
     'click #colaLayout' : function(){ changeLayout("cola") },
-    'click #arborLayout' : function(){ changeLayout("cola") },
+    'click #arborLayout' : function(){ changeLayout("arbor") },
     'click #randomLayout' : function(){ changeLayout("random") },
     'click #circleLayout' : function(){ changeLayout("circle") },
     'click #gridLayout' : function(){ changeLayout("grid") },
+    'click #springy' : function(){ changeLayout("springy") },
 
     // toggle add/remove edges feature
     'click #draw-edgehandles' : function(){

@@ -24,7 +24,6 @@ Template.listStack.helpers({
         return this.data.id;
     },
     date: function() {
-
         var d = this.data.date_created;
         var day = d.getDate();
         var month = d.getMonth() + 1; //Months are zero based
@@ -35,7 +34,7 @@ Template.listStack.helpers({
         var minute = d.getMinutes();
         var complete = day + "-" + month + "-" + year + " " + hour + ":" + minute + amPm;
         //console.log(complete);
-        return complete
+        return complete;
     }
 });
 

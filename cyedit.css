@@ -5,6 +5,7 @@
   height: 100vh;
   position: absolute;
   float: right;
+    z-index: 50;
   background-color: #D1EEEE;
 }
 
@@ -45,6 +46,12 @@
 }
 
 #infoBox {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    width: 300px;
+    height: 350px;
+    z-index: 100;
   visibility: hidden;
 }
 

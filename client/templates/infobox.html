@@ -8,8 +8,9 @@
         <ul>
             <li>Node Id: {{ currentSelection.data.id }}</li>
             <li>Posted by: {{ currentSelection.data.user.user }}</li>
-            <li>References: {{ currentSelection.data.referencing }}</li>
-            <li>Referenced: {{ currentSelection.data.referenced }}</li>
+            <li>Date Posted: {{date currentSelection.data.date_created}}</li>
+            <li>References: {{ currentSelection.connective.referencing }}</li>
+            <li>Referenced: {{ currentSelection.connective.referenced }}</li>
         </ul>
     {{else}}
         <ul>
