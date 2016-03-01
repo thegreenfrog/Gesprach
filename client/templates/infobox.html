@@ -1,23 +1,65 @@
 <template name="infobox">
 
-    <h3>
-        {{> xEditable type="text" value=currentSelection.data.name success=onSuccess placement="right" defaultValue="Name"}}
-    </h3>
+    {{#if addNode}}
+        <!--<ul>-->
+            <!--<li>Node Id: {{ currentSelection.data.id }}</li>-->
+            <!--<li>Posted by: {{ currentSelection.data.user.user }}</li>-->
+            <!--<li>Date Posted: {{date currentSelection.data.date_created}}</li>-->
+            <!--<li>References: {{ currentSelection.connective.referencing }}</li>-->
+            <!--<li>Referenced: {{ currentSelection.connective.referenced }}</li>-->
+        <!--</ul>-->
+        <h3>Add Comment</h3>
+        <form class="navbar-form navbar-left" role="add" id="addNode">
+            <div class="form-group" id="addNodeForm">
+                {{#if quotingComment}}
+                    <select class="form-control" id="sel1">
+                        <option>Quote-Reply</option>
+                    </select>
 
-    {{#if node}}
-        <ul>
-            <li>Node Id: {{ currentSelection.data.id }}</li>
-            <li>Posted by: {{ currentSelection.data.user.user }}</li>
-            <li>Date Posted: {{date currentSelection.data.date_created}}</li>
-            <li>References: {{ currentSelection.connective.referencing }}</li>
-            <li>Referenced: {{ currentSelection.connective.referenced }}</li>
-        </ul>
+                    <label for="quote">Quote:</label>
+                    <textarea class="form-control" rows="1" id="quote">"{{quoteMaterial}}"</textarea>
+                {{else}}
+                    <label for="sel1">Select list:</label>
+                    <select class="form-control" id="sel1">
+                        <option>Post</option>
+                        <option>Reply</option>
+                        <option>Quote-Reply</option>
+                        <option>Disagree</option>
+                    </select>
+                {{/if}}
+
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+            <button class="btn btn-primary btn-sm" type="submit"  id="submit">
+                Add Comment <span class="fa fa-comment"></span>
+            </button>
+        </form>
     {{else}}
-        <ul>
-            <li>Edge Id: {{ currentSelection.data.id }}</li>
-            <li>Source Node: {{ currentSelection.data.source }}</li>
-            <li>Target Node: {{ currentSelection.data.target }}</li>
-        </ul>
+        <!--<ul>-->
+            <!--<li>Edge Id: {{ currentSelection.data.id }}</li>-->
+            <!--<li>Source Node: {{ currentSelection.data.source }}</li>-->
+            <!--<li>Target Node: {{ currentSelection.data.target }}</li>-->
+        <!--</ul>-->
+        <!--{{> xEditable type="text" value=currentSelection.data.name success=onSuccess placement="right" defaultValue="Name"}}-->
+        <div id="commentBox">
+        {{#if editMode}}
+            <textarea class="form-control" rows="5" id="comment">{{currentSelection.data.name}}</textarea>
+            <button class="btn btn-primary btn-sm" type="submit"  id="submit">
+                Save Comment <span class="fa fa-comment"></span>
+            </button>
+        {{else}}
+            {{#if sameUser currentSelection.data.user.user}}
+                <a href="#" id="edit-comment"><i class="glyphicon glyphicon-edit"></i></a>
+            {{/if}}
+            <a href="#" id="quote-comment"><i class="glyphicon glyphicon-comment"></i></a>
+            {{#if quotedComment currentSelection.data.quote.present}}
+                <blockquote>{{currentSelection.data.quote.quoteText}}</blockquote>
+            {{/if}}
+            <p id="comment-text">{{currentSelection.data.name}}</p>
+        {{/if}}
+
+        </div>
     {{/if}}
 
 </template>

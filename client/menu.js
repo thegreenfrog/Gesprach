@@ -4,7 +4,7 @@ function changeLayout (layoutName) {
     var savePositions = function () {
       for (var i = 0; i < net.nodes().length; i++) {
             var node = net.nodes()[i];
-            Meteor.call("updateNodePosition", node.id(), node.position())
+            Meteor.call("updateNodePosition", node.id(), node.position());
         }
     };
 
@@ -60,35 +60,10 @@ Template._header.events = {
         e.target.innerHTML = "Select Source";
 
     },
-
-    //add Node
-    'submit form': function(e, template) {
-        e.preventDefault();
-        if($(e.target).prop("id") == 'add') {
-            var text = e.target.text.value;
-            console.log(text);
-            var nodeId = 'node' + Math.round( Math.random() * 1000000 );
-
-            Meteor.call("addNode", nodeId, text, function(err, data) {
-                var node = net.getElementById(nodeId);
-                node.select();
-                template.find("form").reset();
-                $('#add').dropdown("toggle");
-                console.log('x:' + data.x + ' y:' + data.y);
-
-                net.animate({
-                    zoom: 2,
-                    center: {
-                        eles: node
-                    }
-
-                }, {
-                    duration: 800
-                });
-
-                console.log('finished panning and zooming');
-            });
-        }
+    //trigger infobox to change to add node form
+    "click #add" : function() {
+        Session.set('currentType', 'addNode');
+        $("#infoBox").css('visibility', 'visible');
     },
 
     // add random nodes 

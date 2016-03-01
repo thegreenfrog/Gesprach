@@ -31,7 +31,7 @@ Template.listStack.helpers({
         var hour_military = d.getHours();
         var hour = ((hour_military + 11) % 12) + 1;
         var amPm = hour_military > 11 ? 'PM' : 'AM';
-        var minute = d.getMinutes();
+        var minute = (d.getMinutes() < 10 ? '0':'') + d.getMinutes();
         var complete = day + "-" + month + "-" + year + " " + hour + ":" + minute + amPm;
         //console.log(complete);
         return complete;

@@ -39,11 +39,11 @@ function initNetwork() {
       .selector('node')
       .style({
         'content': function(e) {
-          return e.data("name")
+          return e.data("commentType");
         },
         'background-color': function(e) {
-            var user = e.data("user.user");
-            if(user == "anonymous") {
+            var user = e.data("user");
+            if(user.user == "anonymous") {
                 return '#73B79B';
             } else {
                 return '#B7738F';
@@ -56,9 +56,9 @@ function initNetwork() {
         'text-outline-color': function(e) {
           return e.locked() ? "red" : "#888"
         },
-        'min-zoomed-font-size': 8
-          // 'width': 'mapData(score, 0, 1, 20, 50)',
-          // 'height': 'mapData(score, 0, 1, 20, 50)'
+        'min-zoomed-font-size': 8,
+           'width': 'mapData(score, 0, 30, 30, 100)',
+           'height': 'mapData(score, 0, 30, 30, 100)'
       })
       .selector('edge')
       .style({
@@ -70,11 +70,11 @@ function initNetwork() {
         .selector(':selected')
         .style({
           'content': function(e) {
-            return e.data("name") ? e.data("name") : "";
+            return e.data("commentType") ? e.data("commentType") : "";
           },
             'background-color': function(e) {
-                var user = e.data("user.user");
-                if(user == "anonymous") {
+                var user = e.data("user");
+                if(user.user == "anonymous") {
                     return '#356752';
                 } else {
                     return '#67354A';
@@ -230,13 +230,13 @@ function addBehavior(net) {
         $("#infoBox").css('visibility', 'visible');
     });
 
-    net.on('select', 'edge', /*_.debounce(*/ function(e) {
-        var edge = e.cyTarget;
-        console.log(edge);
-        Session.set('currentType', "edge");
-        Session.set('currentId', edge.id());
-        $("#infoBox").css('visibility', 'visible');
-    });
+    //net.on('select', 'edge', /*_.debounce(*/ function(e) {
+    //    var edge = e.cyTarget;
+    //    console.log(edge);
+    //    Session.set('currentType', "edge");
+    //    Session.set('currentId', edge.id());
+    //    $("#infoBox").css('visibility', 'visible');
+    //});
 
     net.on('tap', function(e){
         var target = e.cyTarget;
@@ -246,7 +246,7 @@ function addBehavior(net) {
                 finishCreateEdge();
             }
             Session.set('currentSelected', null);
-            $("#infoBox").css('visibility', 'hidden');
+            //$("#infoBox").css('visibility', 'hidden');
         }
 
     });

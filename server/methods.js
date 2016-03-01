@@ -34,7 +34,69 @@ Meteor.methods({
 
     },
 
-    addNode : function (nodeId, name) {
+    addQuoteNode : function (nodeId, name, quotedNodeId, quoteText, commentType) {
+        var x = Math.random() * 800;
+        var y = Math.random() * 600;
+        var username = "anonymous";
+        var postTotal = 0;
+        var visibility = 0;
+        if(Meteor.user() != null) {
+            console.log(Meteor.user().username);
+            username = Meteor.user().username;
+            Meteor.users.update({_id: Meteor.userId()}, {$inc: {"posts": 1}});
+            postTotal = Meteor.user().posts;
+            visibility = 1;
+        }
+        var quoteReply = false;
+        if (quoteText != "") {
+            quoteReply = true;
+        }
+        var date = new Date();
+        var dateNum = date.getTime();
+        Nodes.insert({
+            group: 'nodes',
+            connective: {
+                total: 0,
+                referencing: 0,
+                referenced: 0
+            },
+            data: {
+                score: 0,
+                id: nodeId,
+                user: {
+                    user: username,
+                    visibility: visibility,//determine if anonymous or has username
+                    postTotal: postTotal
+                },
+                name: name,
+                quote: {
+                    present: quoteReply,
+                    quoteText: quoteText,
+                    quoteSourceId: quotedNodeId
+                },
+                commentType: commentType,
+                starred : false,
+                date_created: date,
+                date_order: dateNum
+            },
+            selected: false,
+            selectable: true,
+            position: {
+                x: x,
+                y: y
+            }
+        });
+        if(username != "anonymous") {
+            console.log('updating postTotals');
+            Nodes.update({"data.user.user": username}, {$set: {"data.user.postTotal": postTotal}}, {multi: true});
+        }
+        return {
+            x: x,
+            y: y
+        }
+
+    },
+    addNode : function (nodeId, name, commentType) {
         var x = Math.random() * 800;
         var y = Math.random() * 600;
         var username = "anonymous";
@@ -57,14 +119,19 @@ Meteor.methods({
                 referenced: 0
             },
             data: {
+                score: 0,
                 id: nodeId,
                 user: {
                     user: username,
                     visibility: visibility,//determine if anonymous or has username
                     postTotal: postTotal
                 },
+                name: name,
+                quote: {
+                    present: false
+                },
+                commentType: commentType,
                 starred : false,
-                name : name,
                 date_created: date,
                 date_order: dateNum
             },
@@ -99,7 +166,8 @@ Meteor.methods({
                 "source" :sourceId,
                 "target" :targetId,
                 "name" : name
-            }
+            },
+            "selectable": false
         });
     },
 
@@ -110,14 +178,14 @@ Meteor.methods({
              Nodes.update({
                  _id: source._id
              }, {
-                 $inc: { "connective.referencing": 1 , "connective.total": 1}
+                 $inc: { "connective.referencing": 1 , "connective.total": 1, "data.score": 1}
              });
 
              var target = Nodes.findOne({ "data.id" : targetId });
              Nodes.update({
                  _id: target._id
              }, {
-                 $inc: { "data.referenced": 1, "connective.total": 1}
+                 $inc: { "data.referenced": 1, "connective.total": 1, "data.score": 1}
              });
          });
     },
@@ -176,7 +244,8 @@ Meteor.methods({
         for(i = 0; i < 20; i++){
             var name =  getRandomWord();
             var nodeId =  'node' + Math.round( Math.random() * 1000000 );
-            Meteor.call("addNode", nodeId, name);
+            var commentType = 'Post';
+            Meteor.call("addNode", nodeId, name, commentType);
         }
 
         // add Edges
