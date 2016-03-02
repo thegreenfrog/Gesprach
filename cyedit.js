@@ -217,8 +217,6 @@ function addBehavior(net) {
         }, {
             duration: 800
         });
-        //net.center(node);
-        //net.zoom(2.0);
         Session.set('currentType', "node");
         Session.set('currentId', node.id());
         var oldId = Session.get('currentSelected');

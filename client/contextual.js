@@ -31,7 +31,7 @@ Template.infobox.events({
             var commentType = e.target.sel1.value;
             var quoteText = "";
             var quotedNodeId = "";
-            if(Session.get('quotingComment')) {
+            if(Session.get('quotingComment')) {//submit post that quotes another
                 quoteText = e.target.quote.value;
                 quotedNodeId = Session.get('currentId');
                 Meteor.call("addQuoteNode", nodeId, text, quotedNodeId, quoteText, commentType, function(err, data) {
@@ -41,7 +41,7 @@ Template.infobox.events({
                     Session.set('quotingComment', false);
                     Session.set('currentType', 'node');
                 });
-            } else {
+            } else {//submit general post
                 Meteor.call("addNode", nodeId, text, commentType, function(err, data) {
                     var node = net.getElementById(nodeId);
                     template.find("form").reset();

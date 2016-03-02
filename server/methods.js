@@ -86,14 +86,18 @@ Meteor.methods({
                 y: y
             }
         });
-        if(username != "anonymous") {
-            console.log('updating postTotals');
-            Nodes.update({"data.user.user": username}, {$set: {"data.user.postTotal": postTotal}}, {multi: true});
-        }
-        return {
-            x: x,
-            y: y
-        }
+        //create edge that points to quoted post
+        Meteor.call('addEdge', nodeId, quotedNodeId, 'Quote-Reply', function(err, data) {
+        //callback necessary for cytoscape to finish adding/rendering edge before returning and zooming into new post
+            if(username != "anonymous") {
+                console.log('updating postTotals');
+                Nodes.update({"data.user.user": username}, {$set: {"data.user.postTotal": postTotal}}, {multi: true});
+            }
+            return {
+                x: x,
+                y: y
+            }
+        });
 
     },
     addNode : function (nodeId, name, commentType) {
@@ -250,7 +254,7 @@ Meteor.methods({
 
         // add Edges
         for(i = 0; i < 25; i++){
-            var name =  getRandomWord();
+            var name =  'Reply';
             var source = Random.choice(Nodes.find().fetch());
             var target = Random.choice(Nodes.find({_id:{$ne:source._id}}).fetch());//make sure we dont connect to the source
             Meteor.call("addEdge", source.data.id, target.data.id, name);
