@@ -131,6 +131,17 @@ blockquote:before {
     margin: 0 5px;
 }
 
+#updateLayout {
+    position: absolute;
+    top: 70px;
+    left: 600px;
+    width: 120px;
+    height: 40px;
+    background-color: #e7e7e7;
+    z-index: 999;
+}
+
+
 
 
 

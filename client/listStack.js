@@ -14,7 +14,6 @@ Template.listStack.helpers({
         }
     },
     toggleSort: function(id) {
-        console.log('id: ' + id);
         return Session.get('commentOrder') == id ? "highlight" : "";
     },
     highlight: function() {

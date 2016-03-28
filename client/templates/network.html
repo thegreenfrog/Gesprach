@@ -1,3 +1,9 @@
 <template name="network">
       <div id="cy"></div>
 </template>
+
+<template name="updateLayout">
+    {{#if newNodes}}
+            <button type="reload" class="btn btn-default" id="updateLayout">Update Layout</button>
+    {{/if}}
+</template>

@@ -47,10 +47,6 @@ Meteor.methods({
             postTotal = Meteor.user().posts;
             visibility = 1;
         }
-        var quoteReply = false;
-        if (quoteText != "") {
-            quoteReply = true;
-        }
         var date = new Date();
         var dateNum = date.getTime();
         Nodes.insert({
@@ -70,7 +66,7 @@ Meteor.methods({
                 },
                 name: name,
                 quote: {
-                    present: quoteReply,
+                    present: true,
                     quoteText: quoteText,
                     quoteSourceId: quotedNodeId
                 },

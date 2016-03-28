@@ -1,30 +1,47 @@
-function changeLayout (layoutName) {
+if(Meteor.isClient) {
+    var layoutDep = new Deps.Dependency();
+    var layoutInterval;
 
-    // TODO : make this function smoother for multi clients
-    var savePositions = function () {
-      for (var i = 0; i < net.nodes().length; i++) {
-            var node = net.nodes()[i];
-            Meteor.call("updateNodePosition", node.id(), node.position());
-        }
-    };
+    function changeLayout (layoutName) {
+        console.log('re-rendering layout');
+        // TODO : make this function smoother for multi clients
+        var savePositions = function () {
+            for (var i = 0; i < net.nodes().length; i++) {
+                var node = net.nodes()[i];
+                Meteor.call("updateNodePosition", node.id(), node.position());
+            }
+        };
 
-    var layout = net.makeLayout({ 
-        name: layoutName,
-        stop: savePositions // callback on layoutstop
+        var layout = net.makeLayout({
+            name: layoutName,
+            stop: savePositions // callback on layoutstop
+        });
+        layout.run();
+    }
+
+    //Template._header.onCreated(function() {
+    //    layoutInterval = Meteor.setInterval(function(){ changeLayout(Session.get('layout'))}, 10000);
+    //});
+    //
+    //Template._header.onDestroyed(function() {
+    //    Meteor.clearInterval(layoutInterval);
+    //});
+
+    Template._header.onRendered(function() {
+        Session.set("signup", false);
     });
-    layout.run();
+
+    Template._header.helpers({
+        currentUsername : function() {
+            console.log(Meteor.user());
+            return Meteor.user().username;
+        }
+    });
 }
 
-Template._header.onRendered(function() {
-   Session.set("signup", false);
-});
 
-Template._header.helpers({
-   currentUsername : function() {
-       console.log(Meteor.user());
-       return Meteor.user().username;
-   }
-});
+
+
 
 Template._header.events = {
     // add/remove nodes
@@ -70,12 +87,12 @@ Template._header.events = {
     "click #init-data": function(){  Meteor.call("resetNetworkData"); },
 
     // layouts
-    'click #colaLayout' : function(){ changeLayout("cola") },
-    'click #arborLayout' : function(){ changeLayout("arbor") },
-    'click #randomLayout' : function(){ changeLayout("random") },
-    'click #circleLayout' : function(){ changeLayout("circle") },
-    'click #gridLayout' : function(){ changeLayout("grid") },
-    'click #springy' : function(){ changeLayout("springy") },
+    'click #colaLayout' : function(){ changeLayout("cola"); Session.set('layout', 'cola'); },
+    'click #arborLayout' : function(){ changeLayout("arbor"); Session.set('layout', 'arbor'); },
+    'click #randomLayout' : function(){ changeLayout("random"); Session.set('layout', 'random'); },
+    'click #circleLayout' : function(){ changeLayout("circle"); Session.set('layout', 'circle'); },
+    'click #gridLayout' : function(){ changeLayout("grid"); Session.set('layout', 'grid'); },
+    'click #springy' : function(){ changeLayout("springy"); Session.set('layout', 'springy') },
 
     // toggle add/remove edges feature
     'click #draw-edgehandles' : function(){

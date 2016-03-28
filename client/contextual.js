@@ -36,19 +36,28 @@ Template.infobox.events({
                 quotedNodeId = Session.get('currentId');
                 Meteor.call("addQuoteNode", nodeId, text, quotedNodeId, quoteText, commentType, function(err, data) {
                     var node = net.getElementById(nodeId);
+                    //net.add(node);
                     template.find("form").reset();
-                    node.select();
                     Session.set('quotingComment', false);
                     Session.set('currentType', 'node');
+                    node.select();
+                    //net.reset();
+                    //var layout = Session.get('layout');
+                    //changeLayout(layout);
                 });
             } else {//submit general post
                 Meteor.call("addNode", nodeId, text, commentType, function(err, data) {
                     var node = net.getElementById(nodeId);
+                    //net.add(node);
                     template.find("form").reset();
-                    node.select();
                     Session.set('currentType', 'node');
+                    node.select();
+                    //net.reset();
+                    //var layout = Session.get('layout');
+                    //changeLayout(layout);
                 });
             }
+
 
         }
     }

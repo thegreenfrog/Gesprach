@@ -1,5 +1,7 @@
 net = ""; // main object to store a cytoscape graph
 
+var graphReady = false;
+
 if (Meteor.isClient) {
 
   // make sure the div is ready
@@ -12,8 +14,22 @@ if (Meteor.isClient) {
     addBehavior(net);
     addEdgehandles(net);
 
+      Session.set('layout', 'cola');
+      Session.set('needReRendering', false);
+
     Tracker.autorun(function() {
       updateNetworkData(net);
+
+    });
+    Nodes.find().observeChanges({
+        added: function(id, doc) {
+            if(graphReady) {
+                console.log("re-rendering layout after adding " + id);
+                //changeLayout(Session.get('layout'));
+                Session.set('needReRendering', true);
+            }
+
+        }
     });
   };
 }
@@ -33,7 +49,10 @@ function initNetwork() {
     ready: function() {
       console.log("network ready");
       updateNetworkData(net); // load data when cy is ready
+        console.log('finished updating network');
+        graphReady = true;
     },
+    layout: { name: 'cola'},
     // style
     style: cytoscape.stylesheet()
       .selector('node')
@@ -192,7 +211,7 @@ function finishCreateEdge() {
 function addBehavior(net) {
 
 
-    net.on('select', 'node', /*_.debounce(*/ function(e) {
+    net.on('select', 'node', function(e) {
         var node = e.cyTarget;
         //if(Session.get('addEdge')) {
         // if(!Session.get('firstNodeSelected')) {
@@ -254,3 +273,4 @@ function addBehavior(net) {
         Meteor.call('updateNodePosition', node.id(), node.position());
     })
 }
+
