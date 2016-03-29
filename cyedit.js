@@ -265,7 +265,6 @@ function addBehavior(net) {
             Session.set('currentSelected', null);
             //$("#infoBox").css('visibility', 'hidden');
         }
-
     });
 
     net.on('drag', 'node', /*_.debounce(*/ function(e) {

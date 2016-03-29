@@ -4,6 +4,13 @@
             <li class="{{toggleSort "edgeConnect"}}"><a href="#" id="edgeConnect">Connectivity</a></li>
             <li class="{{toggleSort "recentPost"}}"><a href="#" id="recentPost">Date Posted</a></li>
             <li class="{{toggleSort "userActivity"}}"><a href="#" id="userActivity">User Activity</a></li>
+            <li class="{{toggleSort "commentHierarchy"}}">
+                {{#if nodeSelected}}
+                    <a href="#" id="commentHierarchy">Comment Hierarchy</a>
+                {{else}}
+                    Comment Hierarchy
+                {{/if}}
+            </li>
         </ul>
     </div>
     <div id="listStack">

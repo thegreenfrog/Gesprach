@@ -9,6 +9,22 @@ Template.listStack.helpers({
                 return Nodes.find({}, {sort: {'data.date_order': -1}});
             case 'userActivity':
                 return Nodes.find({}, {sort: {'data.user.visibility': -1, 'data.user.postTotal': 1}});
+            case 'commentHierarchy':
+                var id = Session.get('currentId');
+                console.log('re-ordering comment hierarchy around: ' + id);
+                var node = net.getElementById(id);
+                var eles = node.predecessors(function() {
+                    return this.isNode();
+                });
+                var arr = [];
+                for(var i = 0; i < eles.length; i++) {
+                    var ele = eles[i].data('id');
+                    arr.push(ele);
+                }
+                var nodes = Nodes.find({
+                    'data.id': { $in: arr}
+                });
+                return nodes;
             default:
                 return Nodes.find();
         }
@@ -18,6 +34,9 @@ Template.listStack.helpers({
     },
     highlight: function() {
         return Session.get('currentSelected') == this.data.id ? "highlight" : "";
+    },
+    nodeSelected: function() {
+        return Session.get('currentSelected') != null;
     },
     nodeId: function() {
         return this.data.id;
@@ -55,6 +74,12 @@ Template.listStack.events = {
         event.preventDefault();
         console.log('sorting by user activity');
         Session.set('commentOrder', 'userActivity');
+    },
+
+    'click #commentHierarchy' : function(event) {
+        event.preventDefault();
+        console.log('sorting by comment hierarchy');
+        Session.set('commentOrder', 'commentHierarchy');
     },
 
     'click #hiddenBullet li': function(event, template) {
