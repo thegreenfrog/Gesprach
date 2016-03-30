@@ -1,3 +1,13 @@
+var TieredComment = function(node, tier) {
+    this.node = node;
+    this.tier = tier;
+};
+
+TieredComment.prototype.level = function() {
+    return this.tier;
+};
+
+
 Template.listStack.helpers({
     comment: function() {
         var order = Session.get('commentOrder');
@@ -13,17 +23,33 @@ Template.listStack.helpers({
                 var id = Session.get('currentId');
                 console.log('re-ordering comment hierarchy around: ' + id);
                 var node = net.getElementById(id);
-                var eles = node.predecessors(function() {
-                    return this.isNode();
-                });
-                var arr = [];
-                for(var i = 0; i < eles.length; i++) {
-                    var ele = eles[i].data('id');
-                    arr.push(ele);
+
+                var nodes = [];
+                //use a stack to do a DFS traversal iteratively
+                //this will put all posts in a hierarchy order.
+                var stack = [];
+                node.data('level', 0);
+                stack.push(node);
+                while(stack.length > 0) {
+                    var top = stack.pop();
+                    var commentNode = Nodes.findOne({
+                        'data.id': top.id()
+                    });
+                    var currentLevel = top.data('level');
+                    if(commentNode) {
+                        var post = new TieredComment(commentNode, currentLevel);
+                        nodes.push(post);
+                    }
+
+                    var parents = top.incomers(function() {
+                        this.data('level', currentLevel+1);
+                        return this.isNode();
+                    });
+                    if(parents.length > 0) {
+                        Array.prototype.push.apply(stack, parents);
+                    }
                 }
-                var nodes = Nodes.find({
-                    'data.id': { $in: arr}
-                });
+
                 return nodes;
             default:
                 return Nodes.find();
@@ -53,7 +79,33 @@ Template.listStack.helpers({
         var complete = day + "-" + month + "-" + year + " " + hour + ":" + minute + amPm;
         //console.log(complete);
         return complete;
+    },
+    tiered: function () {
+        return Session.get('commentOrder') == 'commentHierarchy';
+    },
+    indent: function() {
+        return this.tier * 10;
+    },
+    highlightTiered: function() {
+        return Session.get('currentSelected') == this.node.data.id ? "highlight " + this.tier: "";
+    },
+    nodeIdTiered: function() {
+        return this.node.data.id;
+    },
+    dateTiered: function() {
+        var d = this.node.data.date_created;
+        var day = d.getDate();
+        var month = d.getMonth() + 1; //Months are zero based
+        var year = d.getFullYear();
+        var hour_military = d.getHours();
+        var hour = ((hour_military + 11) % 12) + 1;
+        var amPm = hour_military > 11 ? 'PM' : 'AM';
+        var minute = (d.getMinutes() < 10 ? '0':'') + d.getMinutes();
+        var complete = day + "-" + month + "-" + year + " " + hour + ":" + minute + amPm;
+        //console.log(complete);
+        return complete;
     }
+
 });
 
 Template.listStack.events = {

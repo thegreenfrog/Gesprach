@@ -17,12 +17,20 @@
         <ul class="scrollable-menu" id="hiddenBullet" role="menu">
             {{#each comment}}
                 <a href="#">
-                    <li class="{{highlight}}" id="{{nodeId}}">
-                        <div>{{this.data.name}}</div>
-                        <div>Posted By: {{this.data.user.user}}</div>
-                        <div>{{date}}</div>
-                        <div>{{this.data.user.postTotal}}</div>
-                    </li><hr />
+                    {{#if tiered}}
+                        <li class="{{highlightTiered}}" id="{{nodeIdTiered}}" style="margin-left: {{indent}}px; border-left: #777777 solid medium;">
+                            <div>{{this.node.data.name}}</div>
+                            <div>Posted By: {{this.node.data.user.user}}</div>
+                            <div>{{dateTiered}}</div>
+                        </li><hr />
+                    {{else}}
+                        <li class="{{highlight}}" id="{{nodeId}}">
+                            <div>{{this.data.name}}</div>
+                            <div>Posted By: {{this.data.user.user}}</div>
+                            <div>{{date}}</div>
+                        </li><hr />
+                    {{/if}}
+
                 </a>
             {{/each}}
         </ul>
