@@ -33,6 +33,7 @@
 }
 
 .scrollable-menu li {
+    border-left: #777777 solid medium;
     padding-bottom: 10px;
     padding-top: 10px;
     list-style-type: none;

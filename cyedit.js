@@ -190,6 +190,9 @@ function addCxtMenu(net) {
 function addEdgehandles(net) {
 
   var onComplete = function(source, target, addedEntities) {
+      if(graphReady) {
+          Session.set('needReRendering', true);
+      }
     Meteor.call("addEdge", source.data("id"), target.data("id"));
   };
 

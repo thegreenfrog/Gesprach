@@ -134,8 +134,14 @@ Template.listStack.events = {
         Session.set('commentOrder', 'commentHierarchy');
     },
 
-    'click #hiddenBullet li': function(event, template) {
-        var id = this.data.id;
+    'click #hiddenBullet li': function() {
+
+        var id;
+        if(Session.get('commentOrder') == 'commentHierarchy') {
+            id = this.node.data.id;
+        } else {
+            id = this.data.id;
+        }
         var node = net.getElementById(id);
         node.select();
         //var oldId = Session.get('currentSelected');
