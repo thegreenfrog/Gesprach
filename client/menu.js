@@ -32,6 +32,9 @@ if(Meteor.isClient) {
     });
 
     Template._header.helpers({
+        signUp: function() {
+          return Session.get('signup');
+        },
         currentUsername : function() {
             console.log(Meteor.user());
             return Meteor.user().username;
@@ -55,12 +58,13 @@ Template._header.events = {
     //Show Sign up Form
     "click #signup-page" : function(e) {
         e.preventDefault();
-        console.log("rendering signup page");
+        e.stopPropagation();
         Session.set('signup', true);
     },
 
     "click #signin-page" : function(e) {
         e.preventDefault();
+        e.stopPropagation();
         Session.set('signup', false);
     },
 

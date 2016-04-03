@@ -71,7 +71,7 @@
             {{#if currentUser}}
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{currentUsername}} <span class="caret"></span></a>
             {{else}}
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign In <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{#if signUp}} Sign Up {{else}} Sign In {{/if}}<span class="caret"></span></a>
             {{/if}}
             <ul class="dropdown-menu">
               {{> accounts}}
