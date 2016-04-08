@@ -84,6 +84,7 @@ Template._header.events = {
     //trigger infobox to change to add node form
     "click #add" : function() {
         Session.set('currentType', 'addNode');
+        Session.set('quotingComment', false);
         $("#infoBox").css('visibility', 'visible');
     },
 

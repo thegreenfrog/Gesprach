@@ -44,10 +44,12 @@
         <!--{{> xEditable type="text" value=currentSelection.data.name success=onSuccess placement="right" defaultValue="Name"}}-->
         <div id="commentBox">
         {{#if editMode}}
+            <form class="navbar-form navbar-left" role="update" id="updateNode">
             <textarea class="form-control" rows="5" id="comment">{{currentSelection.data.name}}</textarea>
             <button class="btn btn-primary btn-sm" type="submit"  id="submit">
                 Save Comment <span class="fa fa-comment"></span>
             </button>
+            </form>
         {{else}}
             {{#if sameUser currentSelection.data.user.user}}
                 <a href="#" id="edit-comment"><i class="glyphicon glyphicon-edit"></i></a>

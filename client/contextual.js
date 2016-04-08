@@ -20,7 +20,7 @@ Template.infobox.events({
         Session.set('currentType', 'addNode');
         var text = $('#comment-text')[0].innerHTML;
         Session.set('quotingComment', true);
-        Session.set('quote', text)
+        Session.set('quote', text);
     },
     //add Node
     'submit form': function(e, template) {
@@ -36,30 +36,36 @@ Template.infobox.events({
                 quotedNodeId = Session.get('currentId');
                 Meteor.call("addQuoteNode", nodeId, text, quotedNodeId, quoteText, commentType, function(err, data) {
                     var node = net.getElementById(nodeId);
-                    //net.add(node);
+
                     template.find("form").reset();
                     Session.set('quotingComment', false);
+                    Session.set('currentId', node.id());
                     Session.set('currentType', 'node');
                     node.select();
-                    //net.reset();
-                    //var layout = Session.get('layout');
-                    //changeLayout(layout);
                 });
             } else {//submit general post
                 Meteor.call("addNode", nodeId, text, commentType, function(err, data) {
                     var node = net.getElementById(nodeId);
-                    //net.add(node);
+                    Session.set('quotingComment', false);
                     template.find("form").reset();
                     Session.set('currentType', 'node');
+                    Session.set('currentId', node.id());
                     node.select();
-                    //net.reset();
-                    //var layout = Session.get('layout');
-                    //changeLayout(layout);
                 });
             }
 
 
+        } else {
+            console.log('saving comment');
+            e.preventDefault();
+            var newComment = e.target.comment.value;
+            Meteor.call("updateNode", Session.get('currentId'), newComment, function(err, data) {
+                Session.set('editComment', false);
+            })
         }
+    },
+    'click #save-comment': function(e) {
+
     }
 });
 

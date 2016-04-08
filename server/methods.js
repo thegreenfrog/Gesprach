@@ -8,29 +8,14 @@ Meteor.methods({
         });
     },
 
-    updateNameByType : function (itemId, type, newName) {
+    updateNode : function (itemId, newPost) {
 
-        if( type == "node") {
-
-            var node = Nodes.findOne({ "data.id" : itemId });
-
-             //update coords in DB 
-            Nodes.update({
-                _id: node._id
-            }, {
-                $set: { "data.name": newName }
-            });
-
-        } else if (type == "edge"){
-            
-            var edge = Edges.findOne({ "data.id" : itemId });
-            
-            Edges.update({
-                _id: edge._id
-            }, {
-                $set: { "data.name": newName }
-            });
-        }
+        var node = Nodes.findOne({ "data.id" : itemId });
+        Nodes.update({
+            _id: node._id
+        }, {
+            $set: { "data.name": newPost }
+        });
 
     },
 

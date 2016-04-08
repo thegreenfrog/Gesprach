@@ -24,8 +24,7 @@ if (Meteor.isClient) {
     Nodes.find().observeChanges({
         added: function(id, doc) {
             if(graphReady) {
-                console.log("re-rendering layout after adding " + id);
-                //changeLayout(Session.get('layout'));
+                //console.log("re-rendering layout after adding " + id);
                 Session.set('needReRendering', true);
             }
 
@@ -231,6 +230,7 @@ function addBehavior(net) {
         //
         // }
         //}
+        console.log('selected node');
         net.animate({
             zoom: 2,
             center: {
@@ -241,6 +241,7 @@ function addBehavior(net) {
         });
         Session.set('currentType', "node");
         Session.set('currentId', node.id());
+        Session.set('quotingComment', false);
         var oldId = Session.get('currentSelected');
         if (oldId != null) {
             var oldNode = net.getElementById(oldId);

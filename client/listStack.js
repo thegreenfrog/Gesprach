@@ -84,7 +84,7 @@ Template.listStack.helpers({
         return Session.get('commentOrder') == 'commentHierarchy';
     },
     indent: function() {
-        return this.tier * 10;
+        return this.tier * 20;
     },
     highlightTiered: function() {
         return Session.get('currentSelected') == this.node.data.id ? "highlight " + this.tier: "";
