@@ -7,6 +7,15 @@ TieredComment.prototype.level = function() {
     return this.tier;
 };
 
+function getAllParents(top, level) {
+    return parents = top.incomers(function() {
+        if(this.isNode()) {
+            this.data.level = level + 1;
+            return true;
+        }
+        return false;
+    });
+}
 
 Template.listStack.helpers({
     comment: function() {
@@ -22,35 +31,53 @@ Template.listStack.helpers({
             case 'commentHierarchy':
                 var id = Session.get('currentId');
                 console.log('re-ordering comment hierarchy around: ' + id);
-                var node = net.getElementById(id);
 
-                var nodes = [];
+                var netNode = net.getElementById(id);
+                var nodesInOrder = [];
                 //use a stack to do a DFS traversal iteratively
                 //this will put all posts in a hierarchy order.
                 var stack = [];
-                node.data('level', 0);
-                stack.push(node);
-                while(stack.length > 0) {
-                    var top = stack.pop();
-                    var commentNode = Nodes.findOne({
-                        'data.id': top.id()
-                    });
-                    var currentLevel = top.data('level');
-                    if(commentNode) {
-                        var post = new TieredComment(commentNode, currentLevel);
-                        nodes.push(post);
-                    }
-
-                    var parents = top.incomers(function() {
-                        this.data('level', currentLevel+1);
-                        return this.isNode();
-                    });
-                    if(parents.length > 0) {
-                        Array.prototype.push.apply(stack, parents);
+                var allNodes = Nodes.find().fetch();
+                netNode.data.visited = false;
+                for(var j=0; j<allNodes.length; j++) {
+                    if(allNodes[j].data.id == netNode.id()) {
+                        allNodes[j].data.level = 0;
                     }
                 }
+                stack.push(netNode);
+                while(stack.length > 0) {
+                    var top = stack.pop();
+                    for(var i= 0; i < allNodes.length; i++) {
+                        if(allNodes[i].data.id == top.id()) {
+                            var commentNode = allNodes[i];
 
-                return nodes;
+                            if(!commentNode.data.visited) {
+
+                                allNodes[i].data.visited = true;
+
+                                var currentLevel = allNodes[i].data.level;
+                                console.log(commentNode.data.name + " has level of: " + currentLevel);
+                                var post = new TieredComment(commentNode, currentLevel);
+                                nodesInOrder.push(post);
+                                var parents = getAllParents(top, currentLevel);
+                                if(parents.length > 0) {
+                                    for(var x=0; x<parents.length; x++) {
+                                        for(var k= 0; k < allNodes.length; k++) {
+                                            if(allNodes[k].data.id == parents[x].id()) {
+                                                allNodes[k].data.level = currentLevel + 1;
+                                            }
+                                        }
+                                    }
+                                    Array.prototype.push.apply(stack, parents);
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                }
+
+                return nodesInOrder;
             default:
                 return Nodes.find();
         }
