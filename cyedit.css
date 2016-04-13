@@ -22,17 +22,14 @@
     overflow-x: hidden;
 }
 
-.scrollable-menu a {
+.scrollable-menu .menu-entire-element {
 
     text-decoration: none;
     background-color: #FFEF93;
 }
 
-.scrollable-menu hr {
-    margin: 0;
-}
-
 .scrollable-menu li {
+    overflow: hidden;
     border-left: #777777 solid medium;
     padding: 10px 0px 10px 10px;
     list-style-type: none;
@@ -42,9 +39,63 @@
     background-color: #AAAAAA;
 }
 
+.scrollable-menu li:hover span {
+    opacity: 0.5;
+}
+
+.scrollable-menu li span:hover {
+    opacity: 1.0;
+}
+
 .scrollable-menu .highlight {
     background-color: #BEBEBE;
 }
+
+.scrollable-menu li table {
+    width: 100%;
+}
+
+.scrollable-menu li .content {
+    width: 70%;
+}
+
+.scrollable-menu li .voting {
+
+    width: 30%;
+    overflow: hidden;
+}
+
+.scrollable-menu li .vote-total {
+    text-align: right;
+    width: 50%;
+}
+
+.scrollable-menu li .vote-up-down {
+    text-align: center;
+    width: 50%;
+}
+
+.scrollable-menu .vote-up-down button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    width: 100%;
+    float: left;
+}
+
+.scrollable-menu img {
+    display: block;
+    float: none; clear: both;
+}
+
+.scrollable-menu hr {
+    margin: 0;
+}
+
+
 
 #infoBox {
     position: absolute;
@@ -77,8 +128,40 @@ blockquote:before {
     vertical-align: -0.4em;
 }
 
+#options table {
+    width: 100%;
+}
 
+#options table td {
+    text-align: center;
+    border-left: 3px solid #777;
+    padding: 5px;
+    width: 33%;
+}
 
+#options table td:first-child {
+    border-left: none;
+}
+
+#options table td button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    width: 100%;
+    float: left;
+}
+
+#options table td button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+#options .fa {
+    color: #555555;
+}
 
 #addNodeForm label{
     display: block;
@@ -92,8 +175,16 @@ blockquote:before {
     display: block;
 }
 
+#commentBox p {
+    text-align: left;
+    font-size: 16px;
+    padding: 10px;
+}
+
 #closeInfoBox {
-    display: block;
+    position: relative;
+    left: 7px;
+    top: -10px;
 }
 
 .navbar {

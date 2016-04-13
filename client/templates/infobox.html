@@ -1,13 +1,6 @@
 <template name="infobox">
 
     {{#if addNode}}
-        <!--<ul>-->
-            <!--<li>Node Id: {{ currentSelection.data.id }}</li>-->
-            <!--<li>Posted by: {{ currentSelection.data.user.user }}</li>-->
-            <!--<li>Date Posted: {{date currentSelection.data.date_created}}</li>-->
-            <!--<li>References: {{ currentSelection.connective.referencing }}</li>-->
-            <!--<li>Referenced: {{ currentSelection.connective.referenced }}</li>-->
-        <!--</ul>-->
         <h3>Add Comment</h3>
         <form class="navbar-form navbar-left" role="add" id="addNode">
             <div class="form-group" id="addNodeForm">
@@ -36,12 +29,6 @@
             </button>
         </form>
     {{else}}
-        <!--<ul>-->
-            <!--<li>Edge Id: {{ currentSelection.data.id }}</li>-->
-            <!--<li>Source Node: {{ currentSelection.data.source }}</li>-->
-            <!--<li>Target Node: {{ currentSelection.data.target }}</li>-->
-        <!--</ul>-->
-        <!--{{> xEditable type="text" value=currentSelection.data.name success=onSuccess placement="right" defaultValue="Name"}}-->
         <div id="commentBox">
         {{#if editMode}}
             <form class="navbar-form navbar-left" role="update" id="updateNode">
@@ -51,16 +38,31 @@
             </button>
             </form>
         {{else}}
-            {{#if sameUser currentSelection.data.user.user}}
-                <a href="#" id="edit-comment"><i class="glyphicon glyphicon-edit"></i></a>
-            {{/if}}
-            <a href="#" id="quote-comment"><i class="glyphicon glyphicon-comment"></i></a>
+
+
             {{#if quotedComment currentSelection.data.quote.present}}
                 <blockquote>{{currentSelection.data.quote.quoteText}}</blockquote>
             {{/if}}
             <p id="comment-text">{{currentSelection.data.name}}</p>
         {{/if}}
+        </div>
+        <div id="options">
+            <div id="subscribe">
+                <table>
+                    <tr>
+                        <td>
+                            <button type="button" id="subscribe-user" {{signedIn}}><i class="fa fa-plus-circle" style="font-size: 1.2em;" aria-hidden="true"></i></button>
+                        </td>
+                        <td>
+                            <button type="button" id="quote-comment"><i class="fa fa-reply" style="font-size: 1.2em;" aria-hidden="true"></i></button>
+                        </td>
+                        <td>
+                                <button type="button" id="edit-comment" {{sameUser}}><i class="fa fa-pencil-square-o" style="font-size: 1.2em;" aria-hidden="true"></i></button>
 
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     {{/if}}
 

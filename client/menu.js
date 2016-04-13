@@ -114,7 +114,6 @@ Template._header.events = {
 
 Template.accounts.helpers({
     signupPage : function() {
-        console.log('checking signup status');
         return Session.get("signup");
     }
 });

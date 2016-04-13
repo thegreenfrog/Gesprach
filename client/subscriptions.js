@@ -5,3 +5,7 @@ if(Meteor.isClient) {
 
 }
 
+Accounts.onCreateUser(function(options, user) {
+    user.following = [];
+    return user;
+});

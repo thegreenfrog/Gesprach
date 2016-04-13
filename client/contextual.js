@@ -22,6 +22,13 @@ Template.infobox.events({
         Session.set('quotingComment', true);
         Session.set('quote', text);
     },
+    'click #subscribe-user' : function(event) {
+        event.preventDefault();
+        console.log('subscribing user');
+        var id = Session.get('currentId');
+        var user = Nodes.findOne({"data.id" : id}).data.user.user;
+        Meteor.user().following.push(user);
+    },
     //add Node
     'submit form': function(e, template) {
         e.preventDefault();
@@ -83,34 +90,42 @@ Template.infobox.helpers({
         return Session.get('editComment');
     },
 
-    sameUser: function(username) {
-        return username == Meteor.user().username;
+    sameUser: function() {
+        var id = Session.get('currentId');
+        if(id != null && Meteor.user() != null) {
+            var user = Nodes.findOne({"data.id" : id}).data.user.user;
+            if(user != Meteor.user().username) {
+                return "disabled";
+            }
+            return "";
+        }
+        console.log('id no available');
+        return "disabled";
     },
-
     onSuccess: function () {
         return function (res, val) {
             Meteor.call("updateNameByType", Session.get('currentId'), Session.get('currentType'), val);
         }
     },
-
      currentSelection: function() {
         var id= Session.get('currentId'),
             type = Session.get('currentType'),
             item = {};
-
-
        if( type == "node") {
             item= Nodes.findOne({"data.id" : id});
         } else if (type== "edge"){
             item= Edges.findOne({"data.id" : id});
         }
-
         return item;
     },
 
     addNode: function() {
         var type = Session.get('currentType');
         return type == "addNode";
+    },
+
+    signedIn: function() {
+        return Meteor.user() ? "" : "disabled";
     },
 
     date: function(data) {

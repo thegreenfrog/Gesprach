@@ -242,6 +242,7 @@ function addBehavior(net) {
         Session.set('currentType', "node");
         Session.set('currentId', node.id());
         Session.set('quotingComment', false);
+        Session.set('editComment', false);
         var oldId = Session.get('currentSelected');
         if (oldId != null) {
             var oldNode = net.getElementById(oldId);
@@ -267,6 +268,7 @@ function addBehavior(net) {
                 finishCreateEdge();
             }
             Session.set('currentSelected', null);
+            Session.set('editComment', false);
             //$("#infoBox").css('visibility', 'hidden');
         }
     });

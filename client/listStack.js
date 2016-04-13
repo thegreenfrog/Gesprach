@@ -7,6 +7,15 @@ TieredComment.prototype.level = function() {
     return this.tier;
 };
 
+function getIndex(arr, id) {
+    for(var i=0; i<arr.length; i++) {
+        if(arr[i].data.id == id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 function getAllParents(top, level) {
     return parents = top.incomers(function() {
         if(this.isNode()) {
@@ -20,17 +29,15 @@ function getAllParents(top, level) {
 Template.listStack.helpers({
     comment: function() {
         var order = Session.get('commentOrder');
-        console.log(order);
         switch(order) {
             case 'edgeConnect':
                 return Nodes.find({}, {sort: {'connective.total': -1}});
             case 'recentPost':
                 return Nodes.find({}, {sort: {'data.date_order': -1}});
             case 'userActivity':
-                return Nodes.find({}, {sort: {'data.user.visibility': -1, 'data.user.postTotal': 1}});
+                return Nodes.find({}, {sort: {'data.user.visibility': -1, 'data.score': -1}});
             case 'commentHierarchy':
                 var id = Session.get('currentId');
-                console.log('re-ordering comment hierarchy around: ' + id);
 
                 var netNode = net.getElementById(id);
                 var nodesInOrder = [];
@@ -39,11 +46,7 @@ Template.listStack.helpers({
                 var stack = [];
                 var allNodes = Nodes.find().fetch();
                 netNode.data.visited = false;
-                for(var j=0; j<allNodes.length; j++) {
-                    if(allNodes[j].data.id == netNode.id()) {
-                        allNodes[j].data.level = 0;
-                    }
-                }
+                allNodes[getIndex(allNodes, netNode.id())].data.level = 0;
                 stack.push(netNode);
                 while(stack.length > 0) {
                     var top = stack.pop();
@@ -51,22 +54,19 @@ Template.listStack.helpers({
                         if(allNodes[i].data.id == top.id()) {
                             var commentNode = allNodes[i];
 
-                            if(!commentNode.data.visited) {
+                            if(!commentNode.data.visited) {//skip node if we have visited it already
+                                //prevents cycles
 
-                                allNodes[i].data.visited = true;
+                                allNodes[i].data.visited = true;//tag node as visited now
 
                                 var currentLevel = allNodes[i].data.level;
-                                console.log(commentNode.data.name + " has level of: " + currentLevel);
                                 var post = new TieredComment(commentNode, currentLevel);
                                 nodesInOrder.push(post);
                                 var parents = getAllParents(top, currentLevel);
                                 if(parents.length > 0) {
                                     for(var x=0; x<parents.length; x++) {
-                                        for(var k= 0; k < allNodes.length; k++) {
-                                            if(allNodes[k].data.id == parents[x].id()) {
-                                                allNodes[k].data.level = currentLevel + 1;
-                                            }
-                                        }
+                                        var indx = getIndex(allNodes, parents[x].id());
+                                        allNodes[indx].data.level = currentLevel + 1;
                                     }
                                     Array.prototype.push.apply(stack, parents);
                                 }
@@ -131,6 +131,20 @@ Template.listStack.helpers({
         var complete = day + "-" + month + "-" + year + " " + hour + ":" + minute + amPm;
         //console.log(complete);
         return complete;
+    },
+    canVoteUp: function() {
+        if (Session.get('commentOrder') == 'commentHierarchy') {
+            console.log('tiered');
+            //user is logged in and has not voted up this post already
+            return Meteor.user() != null && this.node.data.upVotes.indexOf(Meteor.user().username) == -1;
+        }
+        return Meteor.user() != null && this.data.upVotes.indexOf(Meteor.user().username) == -1;
+    },
+    canVoteDown: function() {
+        if (Session.get('commentOrder') == 'commentHierarchy') {
+            return Meteor.user() != null && this.node.data.downVotes.indexOf(Meteor.user().username) == -1;
+        }
+        return Meteor.user() != null && this.data.downVotes.indexOf(Meteor.user().username) == -1;
     }
 
 });
@@ -171,17 +185,20 @@ Template.listStack.events = {
         }
         var node = net.getElementById(id);
         node.select();
-        //var oldId = Session.get('currentSelected');
-        //if (oldId != null) {
-        //    var oldNode = net.getElementById(oldId);
-        //    oldNode.unselect();
-        //}
-        //Session.set('currentSelected', this.data.id);
-    }
+    },
+
+    'click .voting-table button': function(e) {//increment, decrement score
+        e.stopPropagation();
+        var idTag = e.currentTarget.getAttribute("id");
+        if(idTag == 'up') {
+            Meteor.call('updateScore', this.data.id, 1, true);
+        } else {
+            Meteor.call('updateScore', this.data.id, -1, false);
+        }
+    },
 };
 
 Template.listStack.onCreated(function() {
-    console.log('order set');
     Session.set('commentOrder', 'recentPost');
 });
 

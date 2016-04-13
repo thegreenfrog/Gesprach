@@ -16,22 +16,91 @@
     <div id="listStack">
         <ul class="scrollable-menu" id="hiddenBullet" role="menu">
             {{#each comment}}
-                <a href="#">
-                    {{#if tiered}}
-                        <li class="{{highlightTiered}}" id="{{nodeIdTiered}}" style="margin-left: {{indent}}px; ">
-                            <div>{{this.node.data.name}}</div>
-                            <div>Posted By: {{this.node.data.user.user}}</div>
-                            <div>{{dateTiered}}</div>
-                        </li><hr />
-                    {{else}}
-                        <li class="{{highlight}}" id="{{nodeId}}">
-                            <div>{{this.data.name}}</div>
-                            <div>Posted By: {{this.data.user.user}}</div>
-                            <div>{{date}}</div>
-                        </li><hr />
-                    {{/if}}
+                <div class="menu-element">
 
-                </a>
+                    <a href="#" class="menu-entire-element">
+                        {{#if tiered}}
+                            <li class="{{highlightTiered}}" id="{{nodeIdTiered}}" style="margin-left: {{indent}}px; ">
+                                <table>
+                                    <tr>
+                                        <td class="content">
+                                            <div>{{this.node.data.name}}</div>
+                                            <div>Posted By: {{this.node.data.user.user}}</div>
+                                            <div>{{dateTiered}}</div>
+                                        </td>
+                                        <td class="voting">
+                                            <table class="voting-table">
+                                                <tr>
+                                                    <td class="vote-total">{{this.node.data.score}}</td>
+                                                    <td class="vote-up-down">
+                                                        {{#if canVoteUp}}
+                                                            <button type="button" id="up">
+                                                                <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                                            </button>
+                                                        {{else}}
+                                                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                                        {{/if}}
+
+                                                        {{#if canVoteDown}}
+                                                            <button type="button" id="down">
+                                                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                                            </button>
+                                                        {{else}}
+                                                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                                        {{/if}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </li><hr />
+                        {{else}}
+                            <li class="{{highlight}}" id="{{nodeId}}">
+                                <table>
+                                    <tr>
+                                        <td class="content">
+                                            <div>{{this.data.name}}</div>
+                                            <div>Posted By: {{this.data.user.user}}</div>
+                                            <div>{{date}}</div>
+                                        </td>
+                                        <td class="voting">
+                                            <table class="voting-table">
+                                                <tr>
+                                                    <td class="vote-total">{{this.data.score}}</td>
+                                                    <td class="vote-up-down">
+                                                    {{#if canVoteUp}}
+                                                        <button type="button" id="up">
+                                                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                                        </button>
+                                                    {{else}}
+                                                        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                                    {{/if}}
+
+                                                    {{#if canVoteDown}}
+                                                        <button type="button" id="down">
+                                                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                                        </button>
+                                                    {{else}}
+                                                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                                    {{/if}}
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </li><hr />
+                        {{/if}}
+
+                    </a>
+
+                </div>
+
             {{/each}}
         </ul>
 

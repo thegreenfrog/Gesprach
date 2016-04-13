@@ -9,13 +9,48 @@ Meteor.methods({
     },
 
     updateNode : function (itemId, newPost) {
-
-        var node = Nodes.findOne({ "data.id" : itemId });
         Nodes.update({
-            _id: node._id
+            _id: itemId
         }, {
             $set: { "data.name": newPost }
         });
+
+    },
+
+    updateScore : function(itemId, increment, upVote) {
+        if(upVote) {
+            if(Nodes.findOne({"data.id": itemId, "data.downVotes": {$in: [Meteor.user().username]}}, {}) != null) {
+                Nodes.update({
+                    "data.id": itemId
+                }, {
+                    $pull: {"data.downVotes": {$in: [Meteor.user().username]}},
+                    $inc: {"data.score": increment}
+                });
+                return;
+            }
+            Nodes.update({
+                "data.id": itemId
+            }, {
+                $inc: {"data.score": increment},
+                $push: {"data.upVotes": Meteor.user().username}
+            });
+        } else {
+            if(Nodes.findOne({"data.id": itemId, "data.upVotes": {$in: [Meteor.user().username]}}, {}) != null) {
+                Nodes.update({
+                    "data.id": itemId
+                }, {
+                    $pull: {"data.upVotes": {$in: [Meteor.user().username]}},
+                    $inc: {"data.score": increment}
+                });
+                return;
+            }
+            Nodes.update({
+                "data.id": itemId
+            }, {
+                $inc: {"data.score": increment},
+                $push: {"data.downVotes": Meteor.user().username}
+            });
+        }
 
     },
 
@@ -43,6 +78,8 @@ Meteor.methods({
             },
             data: {
                 score: 0,
+                upVotes: [],//holds usernames of users who upvoted
+                downVotes: [],
                 id: nodeId,
                 user: {
                     user: username,
@@ -105,6 +142,8 @@ Meteor.methods({
             },
             data: {
                 score: 0,
+                upVotes: [],
+                downVotes: [],
                 id: nodeId,
                 user: {
                     user: username,
@@ -163,14 +202,14 @@ Meteor.methods({
              Nodes.update({
                  _id: source._id
              }, {
-                 $inc: { "connective.referencing": 1 , "connective.total": 1, "data.score": 1}
+                 $inc: { "connective.referencing": 1 , "connective.total": 1}
              });
 
              var target = Nodes.findOne({ "data.id" : targetId });
              Nodes.update({
                  _id: target._id
              }, {
-                 $inc: { "data.referenced": 1, "connective.total": 1, "data.score": 1}
+                 $inc: { "data.referenced": 1, "connective.total": 1}
              });
          });
     },
