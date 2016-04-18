@@ -138,6 +138,7 @@ Template.accounts.events = {
                     return;
                 }
             });
+            Meteor.call('addUser', username, Math.round( Math.random() * 1000000 ));
         } else {
             var usernameEmail = e.target.usernameEmail.value;
             var password = e.target.password.value;

@@ -6,9 +6,13 @@ Meteor.publish('nodes', function() {
     return Nodes.find();
 });
 
-Meteor.publish('comments', function() {
-    return Comments.find();
+Meteor.publish('users', function() {
+    return Users.find();
 });
+
+Meteor.publish('userEdges', function() {
+    return UserEdges.find();
+})
 
 // Meteor.publish('singleItem', function(id,type) {
 

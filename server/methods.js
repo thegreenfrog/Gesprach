@@ -124,9 +124,11 @@ Meteor.methods({
         var username = "anonymous";
         var postTotal = 0;
         var visibility = 0;
+        var userID = Math.round( Math.random() * 1000000 );
         if(Meteor.user() != null) {
             console.log(Meteor.user().username);
             username = Meteor.user().username;
+            userID = Meteor.user()._id;
             Meteor.users.update({_id: Meteor.userId()}, {$inc: {"posts": 1}});
             postTotal = Meteor.user().posts;
             visibility = 1;
@@ -147,6 +149,7 @@ Meteor.methods({
                 id: nodeId,
                 user: {
                     user: username,
+                    userId: userID,
                     visibility: visibility,//determine if anonymous or has username
                     postTotal: postTotal
                 },
@@ -169,12 +172,41 @@ Meteor.methods({
         if(username != "anonymous") {
             console.log('updating postTotals');
             Nodes.update({"data.user.user": username}, {$set: {"data.user.postTotal": postTotal}}, {multi: true});
+        } else {
+
         }
         return {
             x: x,
             y: y
         }
 
+    },
+
+    addUser : function(username, id) {
+        var date = new Date();
+        var dateNum = date.getTime();
+        var x = Math.random() * 800;
+        var y = Math.random() * 600;
+        console.log('adding user ' + username);
+        Users.insert({
+            group: 'nodes',
+            data: {
+                id: id,
+                name: username,
+                user: {
+                    user: username
+                },
+                starred : false,
+                date_created: date,
+                date_order: dateNum
+            },
+            selected: false,
+            selectable: true,
+            position: {
+                x: x,
+                y: y
+            }
+        });
     },
 
     deleteEdge : function(edgeId) {
@@ -187,8 +219,27 @@ Meteor.methods({
             group: 'edges',
             data: {
                 id: 'edge' + Math.round( Math.random() * 1000000 ),
-                "source" :sourceId,
-                "target" :targetId,
+                "source" : sourceId,
+                "target" : targetId,
+                "name" : name
+            },
+            "selectable": false
+        });
+
+        var source = Nodes.findOne({'data.id': sourceId}).data.user.userId;
+        if(Users.find({'data.id': source}, {limit: 1}).count() == 0) {
+            Meteor.call('addUser', 'anonymous', source);
+        }
+        var target = Nodes.findOne({'data.id': targetId}).data.user.userId;
+        if(Users.find({'data.id': target}, {limit: 1}).count() == 0) {
+            Meteor.call('addUser', 'anonymous', target);
+        }
+        UserEdges.insert({
+            group: 'edges',
+            data: {
+                id: 'edge' + Math.round( Math.random() * 1000000 ),
+                "source" : source,
+                "target" : target,
                 "name" : name
             },
             "selectable": false
@@ -198,6 +249,9 @@ Meteor.methods({
     addEdge : function (sourceId, targetId, name) {
         console.log('creating edge with source:' + sourceId + " and target:" + targetId);
          Meteor.call('addEdgeHelper', sourceId, targetId, name, function(err, result) {
+             if(err) {
+                 console.log(err);
+             }
              var source = Nodes.findOne({ "data.id" : sourceId });
              Nodes.update({
                  _id: source._id

@@ -16,7 +16,7 @@ if (Meteor.isClient) {
 
       Session.set('layout', 'cola');
       Session.set('needReRendering', false);
-
+      Session.set('showPostNetwork', true);//used to toggle between graph layout of posts or users
     Tracker.autorun(function() {
       updateNetworkData(net);
 
@@ -47,6 +47,7 @@ function initNetwork() {
     container: document.getElementById('cy'),
     ready: function() {
       console.log("network ready");
+        console.log("zoom level: " + net.zoom());
       updateNetworkData(net); // load data when cy is ready
         console.log('finished updating network');
         graphReady = true;
@@ -57,7 +58,10 @@ function initNetwork() {
       .selector('node')
       .style({
         'content': function(e) {
-          return e.data("commentType");
+            if(Session.get('showPostNetwork')) {
+                return e.data("commentType");
+            }
+          return e.data("name");
         },
         'background-color': function(e) {
             var user = e.data("user");
@@ -118,16 +122,27 @@ function initNetwork() {
 }
 
 function updateNetworkData(net) {
+    if(Session.get('showPostNetwork')) {
+        // init Data
+        console.log('showing posts layout');
+        var edges = Edges.find().fetch();
+        var nodes = Nodes.find().fetch();
 
-  // init Data
-  var edges = Edges.find().fetch();
-  var nodes = Nodes.find().fetch();
+        net.elements().remove(); // make sure everything is clean
 
-  net.elements().remove(); // make sure evything is clean
+        if (nodes) net.add(nodes);
+        if (edges) net.add(edges);
+    } else {
+        console.log('showing user layout');
+        var users = Users.find().fetch();
+        var edges = UserEdges.find().fetch();
 
-  if (nodes) net.add(nodes);
-  if (edges) net.add(edges);
-
+        net.elements().remove();
+        if(users) net.add(users);
+        if(edges) net.add(edges);
+    }
+    //console.log(net.nodes().size());
+    //console.log(net.edges().size());
   net.reset(); // render layout
 }
 
