@@ -323,6 +323,11 @@ blockquote:before {
     z-index: 999;
 }
 
+/*hide password*/
+#password {
+    -webkit-text-security: disc;
+
+}
 
 
 
