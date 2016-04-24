@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1bb50b4-43c5-4c96-a640-6ec7c32cbb3e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cyedit.css" afterPath="$PROJECT_DIR$/cyedit.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/release" afterPath="$PROJECT_DIR$/.meteor/release" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/versions" afterPath="$PROJECT_DIR$/.meteor/versions" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/menu.js" afterPath="$PROJECT_DIR$/client/menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/methods.js" afterPath="$PROJECT_DIR$/server/methods.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/network.js" afterPath="$PROJECT_DIR$/client/network.js" />
     </list>
     <ignored path="Gesprach.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,7 +49,17 @@
         <entry file="file://$PROJECT_DIR$/client/network.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/menu.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-13.592592">
+              <caret line="144" column="15" selection-start-line="144" selection-start-column="15" selection-end-line="144" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -65,11 +75,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cyedit.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cyedit.css">
+      <file leaf-file-name="methods.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/methods.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48833033">
-              <caret line="325" column="17" selection-start-line="325" selection-start-column="17" selection-end-line="325" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.6791444">
+              <caret line="253" column="30" selection-start-line="253" selection-start-column="30" selection-end-line="253" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="collections.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/collections.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -101,15 +121,15 @@
         <option value="$PROJECT_DIR$/client/listStack.js" />
         <option value="$PROJECT_DIR$/client/templates/infobox.html" />
         <option value="$PROJECT_DIR$/client/contextual.js" />
-        <option value="$PROJECT_DIR$/client/menu.js" />
         <option value="$PROJECT_DIR$/lib/collections.js" />
-        <option value="$PROJECT_DIR$/server/methods.js" />
         <option value="$PROJECT_DIR$/server/publications.js" />
         <option value="$PROJECT_DIR$/client/subscriptions.js" />
         <option value="$PROJECT_DIR$/client/templates/network.html" />
         <option value="$PROJECT_DIR$/cyedit.js" />
-        <option value="$PROJECT_DIR$/client/network.js" />
         <option value="$PROJECT_DIR$/cyedit.css" />
+        <option value="$PROJECT_DIR$/client/network.js" />
+        <option value="$PROJECT_DIR$/client/menu.js" />
+        <option value="$PROJECT_DIR$/server/methods.js" />
       </list>
     </option>
   </component>
@@ -381,7 +401,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="11" />
+      <option name="time" value="14" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -661,38 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/nodes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/collections.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07653061">
-          <caret line="3" column="46" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/subscriptions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/methods.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.777778">
-          <caret line="194" column="17" selection-start-line="194" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/publications.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -725,14 +713,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/templates/network.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.75">
-          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cyedit.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.333333">
@@ -741,10 +721,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/menu.js">
+    <entry file="file://$PROJECT_DIR$/cyedit.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.5">
-          <caret line="10" column="36" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="36" />
+        <state vertical-scroll-proportion="-11.193548">
+          <caret line="323" column="1" selection-start-line="323" selection-start-column="1" selection-end-line="323" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/templates/network.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.75">
+          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/nodes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/subscriptions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15306123">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -752,7 +756,15 @@
     <entry file="file://$PROJECT_DIR$/client/network.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/collections.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -765,10 +777,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cyedit.css">
+    <entry file="file://$PROJECT_DIR$/client/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48833033">
-          <caret line="325" column="17" selection-start-line="325" selection-start-column="17" selection-end-line="325" selection-end-column="17" />
+        <state vertical-scroll-proportion="-13.592592">
+          <caret line="144" column="15" selection-start-line="144" selection-start-column="15" selection-end-line="144" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/methods.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6791444">
+          <caret line="253" column="30" selection-start-line="253" selection-start-column="30" selection-end-line="253" selection-end-column="30" />
           <folding />
         </state>
       </provider>

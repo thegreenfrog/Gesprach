@@ -135,6 +135,7 @@ Meteor.methods({
         }
         var date = new Date();
         var dateNum = date.getTime();
+        console.log('user ' + userID + " created node " + nodeId);
         Nodes.insert({
             group: 'nodes',
             connective: {
@@ -169,6 +170,7 @@ Meteor.methods({
                 y: y
             }
         });
+
         if(username != "anonymous") {
             console.log('updating postTotals');
             Nodes.update({"data.user.user": username}, {$set: {"data.user.postTotal": postTotal}}, {multi: true});
@@ -183,6 +185,8 @@ Meteor.methods({
     },
 
     addUser : function(username, id) {
+        console.log(this.connection.clientAddress);
+        var ip = this.connection.clientAddress;
         var date = new Date();
         var dateNum = date.getTime();
         var x = Math.random() * 800;
@@ -196,6 +200,7 @@ Meteor.methods({
                 user: {
                     user: username
                 },
+                ip_addr: ip,
                 starred : false,
                 date_created: date,
                 date_order: dateNum
@@ -226,14 +231,30 @@ Meteor.methods({
             "selectable": false
         });
 
-        var source = Nodes.findOne({'data.id': sourceId}).data.user.userId;
-        if(Users.find({'data.id': source}, {limit: 1}).count() == 0) {
+        var sourceNode = Nodes.findOne({'data.id': sourceId});
+        var source = sourceNode.data.user.userId;
+        var sameIPUser = Users.find({'data.ip_addr': this.connection.clientAddress});
+        if(sameIPUser.count() == 0 && Users.find({'data.id': source}, {limit: 1}).count() == 0) {
+            console.log("creating new anonymous user");
             Meteor.call('addUser', 'anonymous', source);
+        } else if(sourceNode.data.user.user != "anonymous" ){
+            var username = sourceNode.data.user.user;
+            source = Users.find({'data.name': username}, {limit: 1}).fetch()[0].data.id;
+        } else if(sameIPUser.count() > 0) {
+            source = sameIPUser.fetch()[0].data.id;
         }
-        var target = Nodes.findOne({'data.id': targetId}).data.user.userId;
-        if(Users.find({'data.id': target}, {limit: 1}).count() == 0) {
+        var targetNode =  Nodes.findOne({'data.id': targetId});
+        var target = targetNode.data.user.userId;
+        if(sameIPUser.count() == 0 && Users.find({'data.id': target}, {limit: 1}).count() == 0) {
+            console.log("creating new anonymous user");
             Meteor.call('addUser', 'anonymous', target);
+        } else if(targetNode.data.user.user != "anonymous") {
+            var username = targetNode.data.user.user;
+            target = Users.find({'data.name': username}, {limit: 1}).fetch()[0].data.id;
+        } else if(sameIPUser.count() > 0) {
+            target = sameIPUser.fetch()[0].data.id;
         }
+        console.log('creating useredge between ' + source + " and " + target);
         UserEdges.insert({
             group: 'edges',
             data: {
@@ -337,8 +358,10 @@ Meteor.methods({
 
     destroyNetworkData: function() {
         // console.log("delete all existing nodes and edges");
-        Nodes.remove({})
-        Edges.remove({})
+        Nodes.remove({});
+        Edges.remove({});
+        UserEdges.remove({});
+        Users.remove({});
     },
 
     resetNetworkData : function() {

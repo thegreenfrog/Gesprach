@@ -28,6 +28,9 @@ if(Meteor.isClient) {
     //});
 
     Template._header.onRendered(function() {
+
+
+
         Session.set("signup", false);
     });
 
@@ -133,12 +136,15 @@ Template.accounts.events = {
                 password: password,
                 posts: 0
             }, function(error) {
+                console.log('callback to creating user');
                 if(error) {
                     console.log(error.reason);
                     return;
                 }
+                Meteor.call('addUser', username, Math.round( Math.random() * 1000000 ));
             });
-            Meteor.call('addUser', username, Math.round( Math.random() * 1000000 ));
+
+
         } else {
             var usernameEmail = e.target.usernameEmail.value;
             var password = e.target.password.value;
