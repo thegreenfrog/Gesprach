@@ -233,7 +233,7 @@ Meteor.methods({
 
         var sourceNode = Nodes.findOne({'data.id': sourceId});
         var source = sourceNode.data.user.userId;
-        var sameIPUser = Users.find({'data.ip_addr': this.connection.clientAddress});
+        var sameIPUser = Users.find({'data.ip_addr': this.connection.clientAddress, 'data.name': {$eq: 'anonymous'}});
         if(sameIPUser.count() == 0 && Users.find({'data.id': source}, {limit: 1}).count() == 0) {
             console.log("creating new anonymous user");
             Meteor.call('addUser', 'anonymous', source);
