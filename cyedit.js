@@ -48,6 +48,7 @@ function initNetwork() {
     ready: function() {
       console.log("network ready");
         console.log("zoom level: " + net.zoom());
+        Session.set('zoom', net.zoom());
       updateNetworkData(net); // load data when cy is ready
         console.log('finished updating network');
         graphReady = true;
@@ -59,7 +60,7 @@ function initNetwork() {
       .style({
         'content': function(e) {
             if(Session.get('showPostNetwork')) {
-                return e.data("commentType");
+                return e.data("croppedName");
             }
           return e.data("name");
         },
@@ -79,8 +80,8 @@ function initNetwork() {
           return e.locked() ? "red" : "#888"
         },
         'min-zoomed-font-size': 8,
-           'width': 'mapData(score, 0, 30, 30, 100)',
-           'height': 'mapData(score, 0, 30, 30, 100)'
+           'width': 'mapData(referenced, 0, 20, 30, 100)',
+           'height': 'mapData(referenced, 0, 20, 30, 100)'
       })
       .selector('edge')
       .style({
@@ -92,7 +93,7 @@ function initNetwork() {
         .selector(':selected')
         .style({
           'content': function(e) {
-            return e.data("commentType") ? e.data("commentType") : "";
+            return Session.get('showPostNetwork') ? e.data("croppedName") : e.data("name");
           },
             'background-color': function(e) {
                 var user = e.data("user");
@@ -226,7 +227,6 @@ function finishCreateEdge() {
 
 // drag behaviour
 function addBehavior(net) {
-
 
     net.on('select', 'node', function(e) {
         var node = e.cyTarget;

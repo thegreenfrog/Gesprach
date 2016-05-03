@@ -1,4 +1,13 @@
-Meteor.methods({
+function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+
+    Meteor.methods({
 
     addComment : function(id, type, text) {
         Comments.insert({
@@ -124,7 +133,7 @@ Meteor.methods({
         var username = "anonymous";
         var postTotal = 0;
         var visibility = 0;
-        var userID = Math.round( Math.random() * 1000000 );
+        var userID = generateUUID();
         if(Meteor.user() != null) {
             console.log(Meteor.user().username);
             username = Meteor.user().username;
@@ -136,6 +145,10 @@ Meteor.methods({
         var date = new Date();
         var dateNum = date.getTime();
         console.log('user ' + userID + " created node " + nodeId);
+        var abbrName = name;
+        if(name.length > 13) {
+            abbrName = name.substr(0, 13).concat("...");
+        }
         Nodes.insert({
             group: 'nodes',
             connective: {
@@ -154,6 +167,7 @@ Meteor.methods({
                     visibility: visibility,//determine if anonymous or has username
                     postTotal: postTotal
                 },
+                croppedName: abbrName,
                 name: name,
                 quote: {
                     present: false
@@ -223,7 +237,7 @@ Meteor.methods({
         Edges.insert({
             group: 'edges',
             data: {
-                id: 'edge' + Math.round( Math.random() * 1000000 ),
+                id: 'edge' + generateUUID(),
                 "source" : sourceId,
                 "target" : targetId,
                 "name" : name
@@ -258,7 +272,7 @@ Meteor.methods({
         UserEdges.insert({
             group: 'edges',
             data: {
-                id: 'edge' + Math.round( Math.random() * 1000000 ),
+                id: 'edge' + generateUUID(),
                 "source" : source,
                 "target" : target,
                 "name" : name
@@ -342,7 +356,7 @@ Meteor.methods({
         // add random Nodes
         for(i = 0; i < 20; i++){
             var name =  getRandomWord();
-            var nodeId =  'node' + Math.round( Math.random() * 1000000 );
+            var nodeId =  'node' + generateUUID();
             var commentType = 'Post';
             Meteor.call("addNode", nodeId, name, commentType);
         }

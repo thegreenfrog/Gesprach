@@ -189,10 +189,10 @@ CSS for Info Box
 
 #infoBox {
     position: absolute;
-    top: 25px;
-    right: 40px;
-    width: 300px;
-    height: 350px;
+    top: 40px;
+    right: 20px;
+    max-width: 250px;
+    /*height: 350px;*/
     z-index: 100;
   visibility: hidden;
 }
@@ -316,7 +316,7 @@ blockquote:before {
 #updateLayout {
     position: absolute;
     top: 100px;
-    left: 800px;
+    left: 600px;
     width: 120px;
     height: 40px;
     background-color: #e7e7e7;
