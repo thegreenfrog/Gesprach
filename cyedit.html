@@ -8,11 +8,28 @@
 <body>
 {{> _header}}
 
+    {{> main}}
+
+
+{{> _footer}}
+</body>
+
+<template name="main">
     <div class="row">
+        <button id="toggle-listStack">
+            {{#if showListStack}}
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+            {{else}}
+                <i class="fa fa-angle-up" aria-hidden="true"></i>
+            {{/if}}
+        </button>
+        {{#if showListStack}}
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            {{> listStack}}
+
+                {{> listStack}}
 
         </div>
+        {{/if}}
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
             {{> network}}
             {{> contextual}}
@@ -20,8 +37,4 @@
         {{> updateLayout}}
 
     </div>
-
-
-{{> _footer}}
-</body>
-
+</template>

@@ -9,6 +9,27 @@
   background-color: #D1EEEE;
 }
 
+#cy.whole {
+    width: 100vw !important;
+}
+
+#toggle-listStack {
+    position: absolute;
+    left: 18vw;
+    top: 300px;
+    z-index: 999;
+    width: 7vw;
+    -moz-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    transform-origin: bottom right;
+}
+
+#toggle-listStack.whole {
+    left: -7vw !important;
+}
+
 #listStack {
     width: 25vw;
     height: 100vh;
@@ -102,6 +123,7 @@ CSS for the Layout Tabs -- Found here: https://css-tricks.com/better-tabs-with-r
 */
 
 .tabrow {
+    width: 75vw;
     background-color: #F8F8F8;
     text-align: center;
     list-style: none;
@@ -115,6 +137,10 @@ CSS for the Layout Tabs -- Found here: https://css-tricks.com/better-tabs-with-r
     position: relative;
     border-left: solid #AAA;
     border-width: thin;
+}
+
+.tabrow.whole {
+    width: 100vw !important;
 }
 .tabrow li {
     border: 1px solid #AAA;

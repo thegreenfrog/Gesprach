@@ -3,6 +3,28 @@ net = ""; // main object to store a cytoscape graph
 var graphReady = false;
 
 if (Meteor.isClient) {
+    Template.main.events = {
+        "click #toggle-listStack" : function(e) {
+            console.log("clicking on toggle");
+            if(Session.get("showListStack")) {
+                Session.set("showListStack", false);
+                $('#cy').addClass('whole');
+                $('.tabrow').addClass('whole');
+                $('#toggle-listStack').addClass('whole');
+            } else {
+                Session.set("showListStack", true);
+                $('#cy').removeClass('whole');
+                $('.tabrow').removeClass('whole');
+                $('#toggle-listStack').removeClass('whole');
+            }
+
+        }
+    };
+    Template.main.helpers({
+        showListStack: function() {
+            return Session.get("showListStack");
+        }
+    });
 
   // make sure the div is ready
   Template.network.rendered = function() {
@@ -17,6 +39,7 @@ if (Meteor.isClient) {
       Session.set('layout', 'cola');
       Session.set('needReRendering', false);
       Session.set('showPostNetwork', true);//used to toggle between graph layout of posts or users
+      Session.set('showListStack', true);
     Tracker.autorun(function() {
       updateNetworkData(net);
 
@@ -292,5 +315,5 @@ function addBehavior(net) {
         var node = e.cyTarget;
         Meteor.call('updateNodePosition', node.id(), node.position());
     })
-}
+};
 

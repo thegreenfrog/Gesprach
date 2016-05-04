@@ -7,7 +7,7 @@ function generateUUID() {
     });
 }
 
-    Meteor.methods({
+Meteor.methods({
 
     addComment : function(id, type, text) {
         Comments.insert({
