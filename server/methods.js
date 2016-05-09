@@ -69,12 +69,18 @@ Meteor.methods({
         var username = "anonymous";
         var postTotal = 0;
         var visibility = 0;
+        var userID = generateUUID();
         if(Meteor.user() != null) {
             console.log(Meteor.user().username);
             username = Meteor.user().username;
             Meteor.users.update({_id: Meteor.userId()}, {$inc: {"posts": 1}});
             postTotal = Meteor.user().posts;
             visibility = 1;
+        }
+        console.log('user ' + userID + " created node " + nodeId);
+        var abbrName = name;
+        if(name.length > 13) {
+            abbrName = name.substr(0, 13).concat("...");
         }
         var date = new Date();
         var dateNum = date.getTime();
@@ -92,9 +98,11 @@ Meteor.methods({
                 id: nodeId,
                 user: {
                     user: username,
+                    userId: userID,
                     visibility: visibility,//determine if anonymous or has username
                     postTotal: postTotal
                 },
+                croppedName: abbrName,
                 name: name,
                 quote: {
                     present: true,
@@ -115,6 +123,7 @@ Meteor.methods({
         });
         //create edge that points to quoted post
         Meteor.call('addEdge', nodeId, quotedNodeId, 'Quote-Reply', function(err, data) {
+            console.log('added edge from comment to quoted');
         //callback necessary for cytoscape to finish adding/rendering edge before returning and zooming into new post
             if(username != "anonymous") {
                 console.log('updating postTotals');
